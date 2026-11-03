@@ -44,7 +44,7 @@ Requires the **pf2e** system. **socketlib** is recommended (players' End Turn an
 - Click an item name to expand its description; right-click the icon posts it to chat; rows drag to the hotbar.
 
 ## Players and permissions
-End Turn and the action/reaction pips are written by the active GM's client as small queued operations (spend, attack, reaction…) applied to the latest state, so simultaneous updates never overwrite each other — through **socketlib** (the GM checks that the player owns that combatant/actor). This works even in worlds where direct combat writes from players are rejected. Requires socketlib (already required by First Strike) and a GM online.
+End Turn and the action/reaction pips are written by the active GM's client as small queued operations (spend, attack, reaction…) applied to the latest state, so simultaneous updates never overwrite each other — through **socketlib** (the GM checks that the player owns that combatant/actor). This works even in worlds where direct combat writes from players are rejected. Requires socketlib and a GM online.
 
 ## Character tab
 Identity cards (ancestry, heritage, class, background, deity), attribute modifiers, Class DC, speeds, focus points, senses, immunities/resistances/weaknesses, languages, NPC traits, skills, Rest for the Night.
@@ -84,6 +84,8 @@ Hooks.on("triad.ready", api => {
 });
 ```
 `api.focusTab(id)` opens the tray on a tab; `api.hasDock(id)` checks registration; `api.setDockBadge(id, true)` shows a dot on that tab. The `triad.layout` hook fires whenever the tray opens or closes, so overlays can keep clear of it.
+
+> **Note:** Persona and First Strike are companion modules that are **still in development** and not publicly released yet. Triad works fully on its own; the integrations below take effect once they are installed.
 
 **Persona** docks itself as a tab (masks icon) with a dot when a player has something new to look at.
 
