@@ -66,7 +66,7 @@ scripts/
   targeting.js      crosshair pick mode + pointer drag-to-token
 templates/          tray.hbs + partials/
 styles/triad.css    Embermark design language
-lang/               en, pt-BR
+lang/               en
 ```
 
 ## Credits
