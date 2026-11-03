@@ -1,0 +1,57 @@
+{
+  "id": "triad",
+  "title": "Triad",
+  "description": "A left-side play tray for Pathfinder 2e: strikes with MAP, spells and slots, actions, consumables, skills, conditions and a three-action turn tracker — without opening the character sheet.",
+  "version": "0.7.1-alpha",
+  "authors": [
+    {
+      "name": "Hello Melo Design"
+    }
+  ],
+  "url": "https://github.com/daember-rpg/triad",
+  "manifest": "https://github.com/daember-rpg/triad/releases/latest/download/module.json",
+  "download": "https://github.com/daember-rpg/triad/releases/download/v0.7.1-alpha/triad.zip",
+  "bugs": "https://github.com/daember-rpg/triad/issues",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "pf2e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "7.0.0"
+        }
+      }
+    ],
+    "recommends": [
+      {
+        "id": "socketlib",
+        "type": "module",
+        "reason": "Lets players end their turn and mark actions through the GM in worlds where direct combat writes are rejected."
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "styles": [
+    "styles/triad.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "lang/pt-BR.json"
+    }
+  ],
+  "flags": {},
+  "socket": true
+}

@@ -1,0 +1,32 @@
+{{#each data as |entry|}}
+    <div class="triad-spell-entry">
+        <div class="triad-spell-entry__header">
+            <span class="triad-spell-entry__name" data-overflow-tip="{{entry.name}}">{{entry.name}}</span>
+            <span class="triad-spell-entry__stats">
+                {{#if entry.attack}}<span data-tooltip="{{localize "TRIAD.Spell.Attack"}}">{{entry.attack}}</span>{{/if}}
+                {{#if entry.dc}}<span data-tooltip="{{localize "TRIAD.Spell.DC"}}">{{localize "TRIAD.Spell.DCShort"}} {{entry.dc}}</span>{{/if}}
+            </span>
+            {{#if entry.focus}}
+                <span class="triad-resource" data-tooltip="{{localize "TRIAD.Spell.Focus"}}">
+                    {{> triad-pips pips=entry.focus action="focusPip" class="triad-pips--focus"}}
+                </span>
+            {{/if}}
+        </div>
+        {{#each entry.groups as |group|}}
+            <div class="triad-group {{#if group.collapsed}}is-collapsed{{/if}}" data-entry-id="{{entry.id}}" data-slot-number="{{group.slotNumber}}">
+                <h3 class="triad-group__header" data-action="toggleSection" data-key="{{group.key}}">
+                    <span class="triad-group__title">{{group.label}}</span>
+                    {{#if group.slots}}{{> triad-pips pips=group.slots action="slotPip" class="triad-pips--slots"}}{{/if}}
+                    <i class="fa-solid fa-chevron-down" inert></i>
+                </h3>
+                {{#unless group.collapsed}}
+                    <ul class="triad-list">
+                        {{#each group.spells as |spell|}}
+                            {{> triad-spell-row spell}}
+                        {{/each}}
+                    </ul>
+                {{/unless}}
+            </div>
+        {{/each}}
+    </div>
+{{/each}}

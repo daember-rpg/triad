@@ -1,0 +1,29 @@
+<section class="triad-section {{#if toggles.collapsed}}is-collapsed{{/if}}" data-section="toggles">
+    <h2 class="triad-section__header" data-action="toggleSection" data-key="toggles">
+        <span>{{localize "TRIAD.Section.toggles"}}</span>
+        <i class="fa-solid fa-chevron-down" inert></i>
+    </h2>
+    {{#unless toggles.collapsed}}
+        <ul class="triad-toggles">
+            {{#each toggles.items as |t|}}
+                <li class="triad-toggle {{#unless t.enabled}}is-disabled{{/unless}}"
+                    data-item-id="{{t.itemId}}" data-domain="{{t.domain}}" data-option="{{t.option}}" data-checked="{{t.checked}}">
+                    {{#if t.alwaysActive}}
+                        <span class="triad-switch is-on is-locked" aria-hidden="true"></span>
+                    {{else}}
+                        <button type="button" class="triad-switch {{#if t.checked}}is-on{{/if}}" data-action="toggleOption"
+                                role="switch" aria-checked="{{t.checked}}" aria-label="{{t.label}}" {{#unless t.enabled}}disabled{{/unless}}></button>
+                    {{/if}}
+                    <span class="triad-toggle__label">{{t.label}}</span>
+                    {{#if t.suboptions.length}}
+                        <select class="triad-select" data-suboption {{#unless t.hasChoice}}disabled{{/unless}} aria-label="{{t.label}}">
+                            {{#each t.suboptions as |sub|}}
+                                <option value="{{sub.value}}" {{#if sub.selected}}selected{{/if}}>{{sub.label}}</option>
+                            {{/each}}
+                        </select>
+                    {{/if}}
+                </li>
+            {{/each}}
+        </ul>
+    {{/unless}}
+</section>

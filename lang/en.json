@@ -1,0 +1,230 @@
+{
+  "TRIAD": {
+    "Tab": {
+      "actions": "Actions",
+      "character": "Character"
+    },
+    "Controls": {
+      "Toggle": "Toggle Triad tray"
+    },
+    "Keybindings": {
+      "toggleTray": "Toggle tray",
+      "actionsTab": "Open Actions tab",
+      "characterTab": "Open Character tab"
+    },
+    "Empty": "Select a token to see its actions.",
+    "OpenSheet": "Open character sheet",
+    "OpenItem": "Open item",
+    "Use": "Use — or drag onto a token to target and use (right-click: post to chat)",
+    "Consume": "Use (right-click: post to chat)",
+    "Uses": "Uses",
+    "Frequency": "Uses this period",
+    "Rest": "Rest for the Night",
+    "HeroPoints": "Hero Points",
+    "Dying": "Dying",
+    "Wounded": "Wounded",
+    "Doomed": "Doomed",
+    "HP": {
+      "EditHint": "Click to edit. Type 12, +5 or -7.",
+      "Temp": "Temporary HP",
+      "TempShort": "TMP"
+    },
+    "Shield": {
+      "Hardness": "Hardness"
+    },
+    "Stat": {
+      "AC": "Armor Class",
+      "ACShort": "AC",
+      "Perception": "Perception",
+      "PerceptionShort": "PER",
+      "ClassDC": "Class DC"
+    },
+    "Save": {
+      "fortitude": "Fortitude",
+      "reflex": "Reflex",
+      "will": "Will"
+    },
+    "SaveShort": {
+      "fortitude": "FORT",
+      "reflex": "REF",
+      "will": "WILL"
+    },
+    "Section": {
+      "strikes": "Strikes",
+      "spells": "Spells",
+      "abilities": "Actions & Reactions",
+      "consumables": "Consumables",
+      "skills": "Skills",
+      "favorites": "Favorites",
+      "toggles": "Options"
+    },
+    "Ability": {
+      "action": "Actions",
+      "reaction": "Reactions",
+      "free": "Free Actions"
+    },
+    "Strike": {
+      "Attack": "Strike with the next MAP — or drag onto a token (right-click: post weapon)",
+      "Damage": "Damage",
+      "Critical": "Critical damage",
+      "Thrown": "Thrown",
+      "Melee": "Melee",
+      "Ranged": "Ranged"
+    },
+    "Spell": {
+      "Cast": "Cast — or drag onto a token to target and cast (right-click: post to chat)",
+      "Attack": "Spell attack",
+      "DC": "Spell DC",
+      "DCShort": "DC",
+      "Focus": "Focus Points",
+      "Signature": "Signature spell",
+      "CastButton": "Cast spell",
+      "Time": "Cast",
+      "Range": "Range",
+      "Area": "Area",
+      "Targets": "Targets",
+      "Defense": "Defense",
+      "Duration": "Duration",
+      "Cost": "Cost",
+      "Requirements": "Requirements",
+      "Traits": "Traits",
+      "Sustained": "sustained",
+      "OneAction": "1 action",
+      "Actions": "{n} actions"
+    },
+    "Status": {
+      "Add": "Add condition",
+      "ConditionHint": "Click: increase · Right-click: decrease",
+      "EffectHint": "Click: open · Right-click: remove"
+    },
+    "Combat": {
+      "RollInitiative": "Roll Initiative",
+      "EndTurn": "End Turn",
+      "Initiative": "Initiative",
+      "ActionsHint": "Click to mark actions spent. Refreshes at the start of your turn.",
+      "Quickened": "Quickened",
+      "Slowed": "Slowed",
+      "Stunned": "Stunned"
+    },
+    "Utility": {
+      "Elevation": "Elevation in ft — type the value and press Enter",
+      "Target": "Toggle target",
+      "AddToCombat": "Add to combat",
+      "TokenConfig": "Token configuration"
+    },
+    "Identity": {
+      "ancestry": "Ancestry",
+      "heritage": "Heritage",
+      "class": "Class",
+      "background": "Background",
+      "deity": "Deity"
+    },
+    "Speed": {
+      "land": "Speed",
+      "fly": "Fly",
+      "swim": "Swim",
+      "climb": "Climb",
+      "burrow": "Burrow"
+    },
+    "Tags": {
+      "senses": "Senses",
+      "immunities": "Immunities",
+      "resistances": "Resistances",
+      "weaknesses": "Weaknesses",
+      "languages": "Languages",
+      "traits": "Traits"
+    },
+    "Warn": {
+      "NoToken": "This actor has no token on the scene.",
+      "UnknownAction": "Unknown PF2e action: {slug}",
+      "NoSocketlib": "Triad: socketlib is not active — players won't be able to end their turn or mark actions from the tray in this world."
+    },
+    "Settings": {
+      "trayWidth": {
+        "Name": "Tray width",
+        "Hint": "Width of the tray panel in pixels."
+      },
+      "pushInterface": {
+        "Name": "Push interface",
+        "Hint": "Shift Foundry's left UI to the right while the tray is open instead of overlapping it."
+      },
+      "useAssignedCharacter": {
+        "Name": "Fall back to my character on this map",
+        "Hint": "When no token is selected, show your character that has a token on the current map (your assigned character first). Characters that aren't on this map are never shown."
+      },
+      "showUnreadyStrikes": {
+        "Name": "Show unready strikes",
+        "Hint": "Also list strikes for weapons that are not currently held."
+      },
+      "section": {
+        "Hint": "Show this section in the Actions tab."
+      },
+      "basicActions": {
+        "Name": "Basic actions",
+        "Hint": "Comma-separated PF2e action slugs shown in the quick action grid (e.g. stride, seek, grapple, raise-a-shield)."
+      },
+      "trackActions": {
+        "Name": "Track three actions",
+        "Hint": "Show clickable action/reaction pips during combat, refreshed automatically at the start of each turn."
+      },
+      "openOnCombat": {
+        "Name": "Open when combat starts",
+        "Hint": "The tray opens automatically when an encounter begins and when you select one of your tokens during combat. Out of combat it stays the way you left it."
+      },
+      "autoSpendActions": {
+        "Name": "Spend actions automatically",
+        "Hint": "Using a Strike, spell, action, reload or Sustain from the tray marks its action cost on the turn tracker (only during that creature's turn); reactions mark the reaction. Pips can still be clicked by hand."
+      },
+      "movementCostsActions": {
+        "Name": "Movement spends actions",
+        "Hint": "Players only: moving a token on its own turn costs one action per Stride (Fly, Swim, Climb, Burrow use their Speed; without a Swim/Climb Speed, the Athletics success distance). The action is spent as soon as the Speed is reached, or when another action is used (a shorter Stride still costs one); meanwhile its pip shows dashed. Undoing a move refunds it. Using Stride or Step from the tray pays the action up front."
+      }
+    },
+    "Error": {
+      "Title": "Triad could not show this token",
+      "Partial": "Some parts could not be read",
+      "Console": "Details in the console (Cmd+Option+I), lines starting with \"triad |\"."
+    },
+    "PostToChat": "Post to chat",
+    "ConsumeButton": "Use item",
+    "Reload": {
+      "Label": "Reload",
+      "Hint": "Reload (Interact). Picks the ammo automatically when there is only one kind.",
+      "Full": "Already fully loaded",
+      "One": "Load one",
+      "All": "Load as many as fit",
+      "NoAmmo": "No compatible ammunition in the inventory."
+    },
+    "Target": {
+      "Hint": "Target: click, then click a token — or drag onto a token. Shift: add/remove. Esc cancels.",
+      "Missed": "Release over a token on the map."
+    },
+    "Recovery": "Recovery Check",
+    "Favorite": {
+      "Add": "Add to favorites",
+      "Remove": "Remove from favorites"
+    },
+    "Sustain": {
+      "Label": "Sustaining",
+      "Button": "Sustain",
+      "Hint": "Sustain (1 action)"
+    },
+    "UseButton": "Use — posts the card to chat (area, saves and damage clickable for everyone)",
+    "Close": "Close",
+    "RecallKnowledge": {
+      "Recommended": "Identifies the targeted creature",
+      "None": "No skill can be used for this."
+    },
+    "Move": {
+      "walk": "Stride",
+      "step": "Step",
+      "crawl": "Crawl",
+      "fly": "Fly",
+      "swim": "Swim",
+      "climb": "Climb",
+      "burrow": "Burrow",
+      "jump": "Leap",
+      "Hint": "Movement for this action. The action is spent when you reach your Speed, or when you use another action. Moving past it starts a new one."
+    }
+  }
+}

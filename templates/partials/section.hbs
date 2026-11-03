@@ -1,0 +1,11 @@
+<section class="triad-section {{#if collapsed}}is-collapsed{{/if}}" data-section="{{id}}">
+    <h2 class="triad-section__header" data-action="toggleSection" data-key="{{id}}">
+        <span>{{localize label}}</span>
+        <i class="fa-solid fa-chevron-down" inert></i>
+    </h2>
+    {{#unless collapsed}}
+        <div class="triad-section__content">
+            {{> (lookup this "partial") data=data}}
+        </div>
+    {{/unless}}
+</section>

@@ -1,0 +1,46 @@
+{{#if status.sustained.length}}
+    <div class="triad-sustain">
+        <span class="triad-sustain__label"><i class="fa-solid fa-hourglass-half" inert></i> {{localize "TRIAD.Sustain.Label"}}</span>
+        {{#each status.sustained as |effect|}}
+            <div class="triad-sustain__item" data-uuid="{{effect.uuid}}">
+                <img src="{{effect.img}}" alt="">
+                <span data-overflow-tip="{{effect.name}}">{{effect.name}}</span>
+                <button type="button" class="triad-chip triad-chip--cast" data-action="sustain" data-tooltip="{{localize "TRIAD.Sustain.Hint"}}">
+                    {{localize "TRIAD.Sustain.Button"}} <span class="action-glyph">1</span>
+                </button>
+            </div>
+        {{/each}}
+    </div>
+{{/if}}
+<div class="triad-status">
+    {{#each status.conditions as |condition|}}
+        <button type="button" class="triad-status__chip {{#if condition.locked}}is-locked{{/if}}" data-action="increaseCondition"
+                data-context="decreaseCondition" data-slug="{{condition.slug}}"
+                data-tooltip="{{condition.name}}<br><small>{{localize "TRIAD.Status.ConditionHint"}}</small>">
+            <img src="{{condition.img}}" alt="">
+            {{#if condition.value}}<span class="triad-status__value">{{condition.value}}</span>{{/if}}
+        </button>
+    {{/each}}
+    {{#each status.effects as |effect|}}
+        <button type="button" class="triad-status__chip triad-status__chip--effect" data-action="openSheet"
+                data-context="deleteEffect" data-item-id="{{effect.id}}" data-uuid="{{effect.uuid}}"
+                data-tooltip="{{effect.name}}<br><small>{{localize "TRIAD.Status.EffectHint"}}</small>">
+            <img src="{{effect.img}}" alt="">
+            {{#if effect.badge}}<span class="triad-status__value">{{effect.badge}}</span>{{/if}}
+        </button>
+    {{/each}}
+    <button type="button" class="triad-status__add {{#if @root.pickerOpen}}is-active{{/if}}" data-action="toggleConditionPicker"
+            data-tooltip="{{localize "TRIAD.Status.Add"}}">
+        <i class="fa-solid fa-plus" inert></i>
+    </button>
+
+    {{#if @root.pickerOpen}}
+        <div class="triad-picker">
+            {{#each status.options as |option|}}
+                <button type="button" class="triad-picker__option" data-action="addCondition" data-slug="{{option.id}}" data-tooltip="{{option.name}}">
+                    <img src="{{option.img}}" alt="">
+                </button>
+            {{/each}}
+        </div>
+    {{/if}}
+</div>

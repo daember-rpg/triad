@@ -1,0 +1,22 @@
+<footer class="triad-utility">
+    {{#if utility.canEditElevation}}
+        <label class="triad-elevation" data-tooltip="{{localize "TRIAD.Utility.Elevation"}}">
+            <i class="fa-solid fa-arrows-up-down" inert></i>
+            <input type="text" inputmode="decimal" data-elevation-input value="{{utility.elevation}}" aria-label="{{localize "TRIAD.Utility.Elevation"}}">
+            <span class="triad-elevation__unit">ft</span>
+        </label>
+    {{else}}
+        <span class="triad-utility__spacer"></span>
+    {{/if}}
+    <button type="button" class="triad-utility__button triad-utility__target" data-action="target" data-token-drag="target"
+            data-tooltip="{{localize "TRIAD.Target.Hint"}}"><i class="fa-solid fa-crosshairs" inert></i></button>
+    {{#if utility.hasToken}}
+        {{#unless utility.inCombat}}
+            <button type="button" class="triad-utility__button" data-action="addToCombat" data-tooltip="{{localize "TRIAD.Utility.AddToCombat"}}"><i class="fa-solid fa-swords" inert></i></button>
+        {{/unless}}
+        {{#if utility.canConfigure}}
+            <button type="button" class="triad-utility__button" data-action="tokenConfig" data-tooltip="{{localize "TRIAD.Utility.TokenConfig"}}"><i class="fa-solid fa-gear" inert></i></button>
+        {{/if}}
+    {{/if}}
+    <button type="button" class="triad-utility__button" data-action="openActor" data-tooltip="{{localize "TRIAD.OpenSheet"}}"><i class="fa-solid fa-book" inert></i></button>
+</footer>

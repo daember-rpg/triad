@@ -1,0 +1,13 @@
+<div class="triad-tab triad-tab--actions">
+    <div class="triad-block">{{> triad-header}}</div>
+    {{#if turn.inCombat}}<div class="triad-block">{{> triad-turn}}</div>{{/if}}
+    <div class="triad-block">
+        {{> triad-status}}
+        {{> triad-basic-actions}}
+    </div>
+    {{#if toggles}}{{> triad-toggles}}{{/if}}
+    {{#each sections as |section|}}
+        {{> triad-section section}}
+    {{/each}}
+    {{> triad-utility}}
+</div>

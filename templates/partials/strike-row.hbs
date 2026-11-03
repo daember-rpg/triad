@@ -1,0 +1,45 @@
+{{#> triad-row useAction="strike" useTooltip=(localize "TRIAD.Strike.Attack")}}
+    <span class="triad-strike" data-strike="{{index}}" data-alt="{{alt}}" data-next-variant="{{nextVariant}}">
+        {{#each variants as |variant|}}
+            <button type="button" class="triad-chip triad-chip--attack {{#if variant.isNext}}is-next{{/if}}" data-action="strike" data-variant="{{variant.index}}" data-tooltip="{{variant.title}}">{{variant.value}}</button>
+        {{/each}}
+        {{#if hasDamage}}
+            <button type="button" class="triad-chip triad-chip--damage" data-action="strikeDamage" data-critical="false" data-tooltip="{{localize "TRIAD.Strike.Damage"}}"><i class="fa-solid fa-droplet" inert></i></button>
+        {{/if}}
+        {{#if hasCritical}}
+            <button type="button" class="triad-chip triad-chip--crit" data-action="strikeDamage" data-critical="true" data-tooltip="{{localize "TRIAD.Strike.Critical"}}"><i class="fa-solid fa-burst" inert></i></button>
+        {{/if}}
+    </span>
+{{/triad-row}}
+{{#if reload}}
+    <li class="triad-reload {{#unless reload.loaded}}is-empty{{/unless}}" data-weapon-id="{{reload.weaponId}}">
+        <span class="triad-reload__state">
+            <i class="fa-solid fa-circle-dot" inert></i> {{reload.loaded}}/{{reload.max}}
+            {{#if reload.loadedName}}<em data-overflow-tip="{{reload.loadedName}}">{{reload.loadedName}}</em>{{/if}}
+        </span>
+        <button type="button" class="triad-chip triad-chip--reload" data-action="reload"
+                data-tooltip="{{#if reload.full}}{{localize "TRIAD.Reload.Full"}}{{else}}{{localize "TRIAD.Reload.Hint"}}{{/if}}">
+            <i class="fa-solid fa-rotate-right" inert></i> {{localize "TRIAD.Reload.Label"}}
+            {{#if reload.glyph}}<span class="action-glyph">{{reload.glyph}}</span>{{/if}}
+        </button>
+    </li>
+    {{#if (eq @root.reloadPicker reload.weaponId)}}
+        <li class="triad-reload-picker" data-weapon-id="{{reload.weaponId}}">
+            {{#each reload.options as |ammo|}}
+                <div class="triad-reload-picker__option {{#if ammo.depleted}}is-depleted{{/if}}">
+                    <img src="{{ammo.img}}" alt="">
+                    <span class="triad-reload-picker__name" data-overflow-tip="{{ammo.name}}">{{ammo.name}}</span>
+                    <span class="triad-tag">{{#if ammo.uses}}{{ammo.uses}}{{else}}×{{ammo.quantity}}{{/if}}</span>
+                    {{#unless ammo.depleted}}
+                        <button type="button" class="triad-chip" data-action="loadAmmo" data-ammo-id="{{ammo.id}}" data-tooltip="{{localize "TRIAD.Reload.One"}}">+1</button>
+                        {{#if ammo.canLoadAll}}
+                            <button type="button" class="triad-chip" data-action="loadAmmo" data-ammo-id="{{ammo.id}}" data-all="true" data-tooltip="{{localize "TRIAD.Reload.All"}}"><i class="fa-solid fa-angles-up" inert></i></button>
+                        {{/if}}
+                    {{/unless}}
+                </div>
+            {{else}}
+                <p class="triad-reload-picker__empty">{{localize "TRIAD.Reload.NoAmmo"}}</p>
+            {{/each}}
+        </li>
+    {{/if}}
+{{/if}}

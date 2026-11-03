@@ -1,0 +1,9 @@
+<div class="triad-skills">
+    {{#each data as |skill|}}
+        <button type="button" class="triad-skill {{#if skill.lore}}is-lore{{/if}}" data-action="rollSkill" data-skill="{{skill.slug}}">
+            {{#if skill.rankLetter}}<span class="triad-rank triad-rank--{{skill.rank}}">{{skill.rankLetter}}</span>{{/if}}
+            <span class="triad-skill__label" data-overflow-tip="{{skill.label}}">{{skill.label}}</span>
+            <span class="triad-skill__mod">{{skill.mod}}</span>
+        </button>
+    {{/each}}
+</div>

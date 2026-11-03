@@ -1,0 +1,50 @@
+<div class="triad-shell">
+    <section class="triad-panel">
+        <div class="triad-body">
+            {{#if fatalError}}
+                <div class="triad-error">
+                    <strong><i class="fa-solid fa-triangle-exclamation" inert></i> {{localize "TRIAD.Error.Title"}}</strong>
+                    <p>{{fatalError}}</p>
+                    <small>{{localize "TRIAD.Error.Console"}}</small>
+                </div>
+            {{/if}}
+            {{#if actor.errors.length}}
+                <div class="triad-error triad-error--soft">
+                    <strong><i class="fa-solid fa-triangle-exclamation" inert></i> {{localize "TRIAD.Error.Partial"}}</strong>
+                    {{#each actor.errors as |error|}}<p><code>{{error.part}}</code> {{error.message}}</p>{{/each}}
+                    <small>{{localize "TRIAD.Error.Console"}}</small>
+                </div>
+            {{/if}}
+            {{#if isDockTab}}
+                <div class="triad-dock-empty">
+                    <i class="fa-solid fa-dice-d20" inert></i>
+                    <p>{{localize dockEmpty}}</p>
+                </div>
+            {{else if actor}}
+                {{#if isCharacterTab}}
+                    {{> triad-character-tab actor}}
+                {{else}}
+                    {{> triad-actions-tab actor}}
+                {{/if}}
+            {{else}}
+                {{> triad-empty}}
+            {{/if}}
+        </div>
+    </section>
+
+    <nav class="triad-rail" aria-label="Triad">
+        {{#each tabs as |tab|}}
+            <button type="button" class="triad-rail__tab {{#if tab.active}}is-active{{/if}}"
+                    data-action="switchTab" data-tab="{{tab.id}}" data-tooltip="{{localize tab.label}}"
+                    aria-label="{{localize tab.label}}">
+                <i class="{{tab.icon}}" inert></i>
+                {{#if tab.badge}}<span class="triad-rail__badge" aria-hidden="true"></span>{{/if}}
+            </button>
+        {{/each}}
+        <span class="triad-rail__spacer"></span>
+        <button type="button" class="triad-rail__toggle" data-action="toggleTray"
+                data-tooltip="{{localize "TRIAD.Controls.Toggle"}}" aria-label="{{localize "TRIAD.Controls.Toggle"}}">
+            <i class="fa-solid fa-angles-right" inert></i>
+        </button>
+    </nav>
+</div>

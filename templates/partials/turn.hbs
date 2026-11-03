@@ -1,0 +1,44 @@
+{{#if turn.inCombat}}
+    <div class="triad-turn {{#if turn.isTurn}}is-turn{{/if}}">
+        {{#if turn.needsInitiative}}
+            <button type="button" class="triad-button triad-button--accent" data-action="rollInitiative">
+                <i class="fa-solid fa-dice-d20" inert></i> {{localize "TRIAD.Combat.RollInitiative"}}
+            </button>
+        {{else}}
+            {{#if turn.track}}
+                <div class="triad-economy" data-tooltip="{{localize "TRIAD.Combat.ActionsHint"}}">
+                    {{#each turn.actions as |pip|}}
+                        <button type="button" class="triad-economy__action {{#if pip.spent}}is-spent{{/if}} {{#if pip.pending}}is-pending{{/if}}" data-action="actionPip" data-index="{{pip.index}}">
+                            <span class="action-glyph">1</span>
+                        </button>
+                    {{/each}}
+                    <button type="button" class="triad-economy__reaction {{#if turn.reactionSpent}}is-spent{{/if}}" data-action="reactionPip"
+                            data-tooltip="{{localize "TRIAD.Ability.reaction"}}">
+                        <span class="action-glyph">R</span>
+                    </button>
+                </div>
+            {{/if}}
+            {{#if turn.isTurn}}
+                <button type="button" class="triad-button triad-button--accent" data-action="endTurn">
+                    <i class="fa-solid fa-hourglass-end" inert></i> {{localize "TRIAD.Combat.EndTurn"}}
+                </button>
+            {{else}}
+                <span class="triad-turn__init" data-tooltip="{{localize "TRIAD.Combat.Initiative"}}"><i class="fa-solid fa-flag" inert></i> {{turn.initiative}}</span>
+            {{/if}}
+        {{/if}}
+    </div>
+    {{#if turn.move}}
+        <p class="triad-turn__move {{#if turn.move.pending}}is-pending{{/if}}" data-tooltip="{{localize "TRIAD.Move.Hint"}}">
+            <i class="fa-solid fa-person-running" inert></i>
+            <span>{{turn.move.label}}</span>
+            <span class="triad-turn__move-ft">{{turn.move.used}} / {{turn.move.budget}} ft</span>
+        </p>
+    {{/if}}
+    {{#if (or turn.slowed turn.stunned turn.quickened)}}
+        <p class="triad-turn__note">
+            {{#if turn.quickened}}<span>{{localize "TRIAD.Combat.Quickened"}}</span>{{/if}}
+            {{#if turn.slowed}}<span>{{localize "TRIAD.Combat.Slowed"}} {{turn.slowed}}</span>{{/if}}
+            {{#if turn.stunned}}<span>{{localize "TRIAD.Combat.Stunned"}} {{turn.stunned}}</span>{{/if}}
+        </p>
+    {{/if}}
+{{/if}}

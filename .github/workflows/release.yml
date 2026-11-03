@@ -1,0 +1,43 @@
+# Publishes a Foundry-installable release when a version tag is pushed (e.g. v0.7.2-alpha).
+# The tag must match "version" in module.json; the zip and module.json are attached to the release,
+# so the manifest URL https://github.com/daember-rpg/triad/releases/latest/download/module.json
+# always points at the newest one.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the tag matches module.json
+        run: |
+          VERSION=$(jq -r .version module.json)
+          if [ "v$VERSION" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match module.json version $VERSION" >&2
+            exit 1
+          fi
+
+      - name: Point the download URL at this release
+        run: |
+          jq --arg url "https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/triad.zip" \
+            '.download = $url' module.json > module.tmp && mv module.tmp module.json
+
+      - name: Build the zip
+        run: zip -r triad.zip module.json LICENSE.txt README.md lang scripts styles templates
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PRERELEASE=""
+          case "$GITHUB_REF_NAME" in *alpha*|*beta*|*rc*) PRERELEASE="--prerelease" ;; esac
+          gh release create "$GITHUB_REF_NAME" triad.zip module.json \
+            --title "Triad $GITHUB_REF_NAME" --generate-notes $PRERELEASE

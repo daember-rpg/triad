@@ -1,0 +1,32 @@
+{{#if basicActions.length}}
+    <div class="triad-basic">
+        {{#each basicActions as |action|}}
+            <button type="button" class="triad-basic__action {{#if action.active}}is-active{{/if}}" data-action="systemAction"
+                    data-slug="{{action.slug}}" {{#if action.needsSkill}}data-needs-skill{{/if}} data-tooltip="{{action.name}}">
+                <i class="{{action.icon}}" inert></i>
+                {{#if action.glyph}}<span class="action-glyph">{{action.glyph}}</span>{{/if}}
+            </button>
+        {{/each}}
+    </div>
+    {{#if skillChoice}}
+        <div class="triad-skill-pick" data-slug="{{skillChoice.slug}}">
+            <div class="triad-skill-pick__header">
+                <span>{{skillChoice.name}}{{#if skillChoice.targetName}} · <em>{{skillChoice.targetName}}</em>{{/if}}</span>
+                <button type="button" class="triad-skill-pick__close" data-action="closeSkillPicker" aria-label="{{localize "TRIAD.Close"}}"><i class="fa-solid fa-xmark" inert></i></button>
+            </div>
+            <div class="triad-skills">
+                {{#each skillChoice.choices as |skill|}}
+                    <button type="button" class="triad-skill {{#if skill.lore}}is-lore{{/if}} {{#if skill.recommended}}is-recommended{{/if}}"
+                            data-action="pickSkill" data-statistic="{{skill.slug}}"
+                            {{#if skill.recommended}}data-tooltip="{{localize "TRIAD.RecallKnowledge.Recommended"}}"{{/if}}>
+                        {{#if skill.rankLetter}}<span class="triad-rank triad-rank--{{skill.rank}}">{{skill.rankLetter}}</span>{{/if}}
+                        <span class="triad-skill__label" data-overflow-tip="{{skill.label}}">{{skill.label}}</span>
+                        <span class="triad-skill__mod">{{skill.mod}}</span>
+                    </button>
+                {{else}}
+                    <p class="triad-reload-picker__empty">{{localize "TRIAD.RecallKnowledge.None"}}</p>
+                {{/each}}
+            </div>
+        </div>
+    {{/if}}
+{{/if}}

@@ -1,0 +1,1999 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap");
+
+/* ==========================================================================
+   Triad — Embermark design tokens
+   ========================================================================== */
+
+:root {
+    --triad-width: 320px;
+    --triad-rail: 30px;
+
+    --em-charcoal: #1c1a17;
+    --em-charcoal-2: #25221e;
+    --em-charcoal-3: #302b26;
+    --em-line: rgba(234, 223, 196, 0.12);
+    --em-line-strong: rgba(234, 223, 196, 0.24);
+    --em-parchment: #eadfc4;
+    --em-parchment-dim: #b9ab8d;
+    --em-parchment-faint: #857a65;
+    --em-clay: #b4643e;
+    --em-clay-light: #d68a5c;
+    --em-clay-soft: rgba(180, 100, 62, 0.22);
+    --em-moss: #74864a;
+    --em-moss-soft: rgba(116, 134, 74, 0.25);
+    --em-ember: #c8452f;
+    --em-ember-soft: rgba(200, 69, 47, 0.25);
+
+    --triad-font-display: "Cinzel", "Palatino Linotype", serif;
+    --triad-font-body: "Spectral", "Georgia", serif;
+    --triad-radius: 6px;
+
+    /* 8pt spacing scale */
+    --sp-1: 8px;
+    --sp-2: 16px;
+    --sp-3: 24px;
+    --sp-4: 32px;
+}
+
+/* ==========================================================================
+   Docking & layout
+   ========================================================================== */
+
+body.triad-docked.triad-push #interface {
+    margin-left: var(--triad-rail);
+    transition: margin-left 0.18s ease;
+}
+
+body.triad-docked.triad-open.triad-push #interface {
+    margin-left: calc(var(--triad-width) + var(--triad-rail));
+}
+
+#triad-tray {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: calc(var(--triad-width) + var(--triad-rail));
+    z-index: 30;
+    pointer-events: none;
+    transform: translateX(calc(-1 * var(--triad-width)));
+    transition: transform 0.18s ease;
+    font-family: var(--triad-font-body);
+    font-size: 14px;
+    line-height: 1.35;
+    color: var(--em-parchment);
+}
+
+#triad-tray.is-open {
+    transform: none;
+}
+
+#triad-tray *,
+#triad-tray *::before,
+#triad-tray *::after {
+    box-sizing: border-box;
+}
+
+/* Neutralize Foundry's global button styling (fixed height, centered content, padding).
+   :where() keeps specificity at zero so every Triad class rule still wins. */
+:where(#triad-tray) button {
+    all: unset;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+    color: inherit;
+    cursor: pointer;
+    line-height: 1;
+    margin: 0;
+}
+
+:where(#triad-tray) button:focus-visible {
+    outline: 1px solid var(--em-clay-light);
+    outline-offset: 1px;
+}
+
+.triad-header__title {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+#triad-tray .action-glyph {
+    font-family: "Pathfinder2eActions", var(--triad-font-body);
+    font-weight: normal;
+}
+
+.triad-shell {
+    display: flex;
+    height: 100%;
+}
+
+.triad-panel {
+    width: var(--triad-width);
+    height: 100%;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    background:
+        linear-gradient(180deg, rgba(180, 100, 62, 0.08), transparent 180px),
+        rgba(28, 26, 23, 0.94);
+    border-right: 1px solid var(--em-line-strong);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+}
+
+.triad-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: var(--sp-2) var(--sp-2) var(--sp-4);
+    scrollbar-width: thin;
+    scrollbar-color: var(--em-clay) transparent;
+}
+
+/* --- Rail ---------------------------------------------------------------- */
+
+.triad-rail {
+    width: var(--triad-rail);
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-1);
+    padding: var(--sp-2) 0;
+}
+
+.triad-rail__spacer {
+    flex: 1;
+}
+
+.triad-rail__tab,
+.triad-rail__toggle {
+    width: 24px;
+    height: 56px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--em-line-strong);
+    border-left: none;
+    border-radius: 0 var(--triad-radius) var(--triad-radius) 0;
+    background: rgba(28, 26, 23, 0.92);
+    color: var(--em-parchment-dim);
+    font-size: 12px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.35);
+    transition: background 0.15s, color 0.15s;
+}
+
+.triad-rail__toggle {
+    height: 32px;
+}
+
+.triad-rail__toggle i {
+    transition: transform 0.18s ease;
+}
+
+#triad-tray.is-open .triad-rail__toggle i {
+    transform: rotate(180deg);
+}
+
+.triad-rail__tab:hover,
+.triad-rail__toggle:hover {
+    color: var(--em-parchment);
+    background: var(--em-charcoal-3);
+}
+
+#triad-tray.is-open .triad-rail__tab.is-active {
+    background: var(--em-clay);
+    border-color: var(--em-clay);
+    color: var(--em-charcoal);
+}
+
+/* ==========================================================================
+   Shared atoms
+   ========================================================================== */
+
+.triad-tab {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);            /* between sections */
+}
+
+.triad-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);            /* inside a section */
+}
+
+.triad-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border: 1px solid var(--em-line-strong);
+    border-radius: var(--triad-radius);
+    background: var(--em-charcoal-2);
+    font-family: var(--triad-font-display);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.triad-button:hover {
+    border-color: var(--em-clay);
+}
+
+.triad-button--accent {
+    background: var(--em-clay);
+    border-color: var(--em-clay);
+    color: var(--em-charcoal) !important;
+}
+
+.triad-button--accent:hover {
+    background: var(--em-clay-light);
+}
+
+.triad-button--wide {
+    width: 100%;
+}
+
+.triad-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: var(--em-charcoal-3);
+    color: var(--em-parchment-dim);
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.triad-tag em {
+    color: var(--em-parchment-faint);
+}
+
+.triad-tag--qty {
+    font-variant-numeric: tabular-nums;
+}
+
+.triad-badge {
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-family: var(--triad-font-display);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.triad-badge--dying { background: var(--em-ember); color: var(--em-parchment); }
+.triad-badge--wounded { background: var(--em-ember-soft); color: var(--em-clay-light); }
+.triad-badge--doomed { background: #3d2335; color: #d9a8c8; }
+
+/* Pips (hero points, focus, slots) — fully reset so Foundry's button styles can't stretch them */
+#triad-tray .triad-pips {
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+}
+
+#triad-tray .triad-pip {
+    all: unset;
+    box-sizing: border-box;
+    display: inline-block;
+    flex: 0 0 auto;
+    width: 12px;
+    height: 12px;
+    border: 1.5px solid var(--em-parchment-faint);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.1s;
+}
+
+#triad-tray .triad-pip:hover { transform: scale(1.2); border-color: var(--em-parchment); }
+#triad-tray .triad-pip.is-filled { background: var(--em-parchment); border-color: var(--em-parchment); }
+#triad-tray .triad-pips--hero .triad-pip.is-filled { background: var(--em-clay-light); border-color: var(--em-clay-light); box-shadow: 0 0 6px var(--em-clay-soft); }
+#triad-tray .triad-pips--focus .triad-pip.is-filled { background: #8fb0c9; border-color: #8fb0c9; }
+#triad-tray .triad-pips--slots .triad-pip { width: 10px; height: 10px; border-radius: 2px; transform: rotate(45deg); }
+#triad-tray .triad-pips--slots .triad-pip:hover { transform: rotate(45deg) scale(1.2); }
+#triad-tray .triad-pips--slots .triad-pip.is-filled { background: var(--em-clay); border-color: var(--em-clay); }
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.triad-header {
+    display: flex;
+    gap: var(--sp-2);
+    align-items: flex-start;
+}
+
+.triad-portrait {
+    position: relative;
+    flex: 0 0 76px;
+    height: 76px;
+    border-radius: var(--triad-radius);
+    overflow: hidden;
+    border: 1px solid var(--em-line-strong);
+    background: var(--em-charcoal-2);
+    cursor: pointer;
+}
+
+.triad-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    border: none;
+    display: block;
+}
+
+.triad-portrait__wound {
+    position: absolute;
+    inset: 0 0 auto 0;
+    background: linear-gradient(180deg, rgba(200, 69, 47, 0.55), rgba(200, 69, 47, 0.25));
+    mix-blend-mode: multiply;
+    transition: height 0.3s ease;
+    pointer-events: none;
+}
+
+.triad-portrait__down {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(28, 26, 23, 0.7);
+    font-size: 28px;
+    color: var(--em-ember);
+}
+
+.triad-portrait__level {
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--em-charcoal);
+    border: 1px solid var(--em-clay);
+    font-family: var(--triad-font-display);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.triad-header__info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-1);
+}
+
+.triad-name {
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-family: var(--triad-font-display);
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    color: var(--em-parchment);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.triad-subtitle {
+    margin: 0;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--em-parchment-dim);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* --- HP ------------------------------------------------------------------ */
+
+.triad-hp {
+    display: flex;
+    gap: 4px;
+    height: 24px;
+}
+
+.triad-hp__bar {
+    position: relative;
+    flex: 1;
+    height: 100%;
+    padding: 0;
+    border: 1px solid var(--em-line-strong);
+    border-radius: var(--triad-radius);
+    background: var(--em-charcoal);
+    overflow: hidden;
+}
+
+.triad-hp__fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: linear-gradient(90deg, #5e6e3a, var(--em-moss));
+    transition: width 0.3s ease;
+}
+
+.triad-hp__bar--bloodied .triad-hp__fill { background: linear-gradient(90deg, #8a5a2a, var(--em-clay)); }
+.triad-hp__bar--critical .triad-hp__fill,
+.triad-hp__bar--down .triad-hp__fill { background: linear-gradient(90deg, #8f2b1d, var(--em-ember)); }
+
+.triad-hp__label {
+    position: relative;
+    font-weight: 600;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.triad-hp__label i {
+    font-size: 10px;
+    opacity: 0.8;
+}
+
+.triad-hp__temp {
+    flex: 0 0 42px;
+    height: 100%;
+    padding: 0;
+    border: 1px dashed var(--em-line-strong);
+    border-radius: var(--triad-radius);
+    background: transparent;
+    color: var(--em-parchment-faint) !important;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.triad-hp.has-temp .triad-hp__temp {
+    border-style: solid;
+    border-color: #8fb0c9;
+    color: #8fb0c9 !important;
+}
+
+.triad-hp__input {
+    flex: 1;
+    height: 100%;
+    padding: 0 8px;
+    border: 1px solid var(--em-clay);
+    border-radius: var(--triad-radius);
+    background: var(--em-charcoal);
+    color: var(--em-parchment);
+    font-family: var(--triad-font-body);
+    font-size: 13px;
+    text-align: center;
+}
+
+.triad-hp__input--temp {
+    flex: 0 0 42px;
+    padding: 0 2px;
+}
+
+/* --- Shield -------------------------------------------------------------- */
+
+.triad-shield {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--em-parchment-faint);
+}
+
+.triad-shield.is-raised { color: var(--em-parchment); }
+.triad-shield.is-raised i { color: var(--em-clay-light); }
+.triad-shield.is-broken { color: var(--em-ember); }
+
+.triad-shield__bar {
+    flex: 1;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--em-charcoal-3);
+    overflow: hidden;
+}
+
+.triad-shield__bar span {
+    display: block;
+    height: 100%;
+    background: var(--em-parchment-dim);
+}
+
+.triad-shield__value {
+    font-variant-numeric: tabular-nums;
+}
+
+/* --- Stat strip ---------------------------------------------------------- */
+
+.triad-stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--sp-1);
+}
+
+.triad-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 2px 5px;
+    border: 1px solid var(--em-line);
+    border-radius: var(--triad-radius);
+    background: var(--em-charcoal-2);
+    transition: border-color 0.15s, background 0.15s;
+}
+
+#triad-tray .triad-stat {
+    height: 48px;
+    min-height: 0;
+    justify-content: center;
+}
+
+#triad-tray .triad-identity__card,
+#triad-tray .triad-skill {
+    height: auto;
+    min-height: 32px;
+    justify-content: flex-start;
+    line-height: 1.2;
+}
+
+#triad-tray .triad-identity__card {
+    min-height: 48px;
+}
+
+button.triad-stat:hover {
+    border-color: var(--em-clay);
+    background: var(--em-clay-soft);
+}
+
+.triad-stat--ac {
+    border-color: var(--em-line-strong);
+    background: linear-gradient(180deg, var(--em-charcoal-3), var(--em-charcoal-2));
+}
+
+.triad-stat__value {
+    font-size: 16px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.triad-stat__label {
+    font-family: var(--triad-font-display);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--em-parchment-faint);
+}
+
+.triad-resources {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-1) var(--sp-2);
+}
+
+.triad-resource {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--em-clay-light);
+}
+
+/* ==========================================================================
+   Turn tracker
+   ========================================================================== */
+
+.triad-turn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-1);
+    padding: var(--sp-1) var(--sp-2) var(--sp-1) var(--sp-1);
+    border: 1px solid var(--em-line);
+    border-radius: var(--triad-radius);
+    background: var(--em-charcoal-2);
+}
+
+.triad-turn.is-turn {
+    border-color: var(--em-clay);
+    box-shadow: 0 0 0 1px var(--em-clay-soft), 0 0 14px var(--em-clay-soft);
+}
+
+.triad-economy {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.triad-economy__action,
+.triad-economy__reaction {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--em-clay);
+    border-radius: var(--triad-radius);
+    background: var(--em-clay-soft);
+    color: var(--em-parchment) !important;
+    font-size: 18px;
+    transition: opacity 0.15s, background 0.15s;
+}
+
+.triad-economy__reaction {
+    margin-left: 6px;
+    border-color: var(--em-moss);
+    background: var(--em-moss-soft);
+}
+
+.triad-economy__action.is-spent,
+.triad-economy__reaction.is-spent {
+    opacity: 0.3;
+    background: transparent;
+}
+
+/* A Stride in progress: this action will be spent when the Speed is reached or another action is used. */
+.triad-economy__action.is-pending {
+    border-style: dashed;
+    background: transparent;
+    opacity: 0.65;
+}
+
+.triad-turn__move.is-pending .triad-turn__move-ft {
+    color: var(--em-clay-light);
+}
+
+.triad-turn__init {
+    font-size: 12px;
+    color: var(--em-parchment-dim);
+}
+
+.triad-turn__note {
+    display: flex;
+    gap: var(--sp-1);
+    margin: 0;
+    font-size: 11px;
+    font-style: italic;
+    color: var(--em-clay-light);
+}
+
+.triad-turn__move {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    margin: 0;
+    font-size: 12px;
+    color: var(--em-parchment-dim);
+}
+
+.triad-turn__move-ft {
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+    color: var(--em-parchment);
+}
+
+/* ==========================================================================
+   Conditions & effects
+   ========================================================================== */
+
+.triad-status {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-1);
+}
+
+.triad-status__chip,
+.triad-status__add {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid var(--em-line-strong);
+    border-radius: var(--triad-radius);
+    background: var(--em-charcoal-2);
+}
+
+.triad-status__chip img {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: inherit;
+    object-fit: cover;
+}
+
+.triad-status__chip--effect {
+    border-color: var(--em-moss);
+}
+
+.triad-status__chip.is-locked {
+    opacity: 0.75;
+}
+
+.triad-status__value {
+    position: absolute;
+    right: -4px;
+    bottom: -4px;
+    min-width: 15px;
+    height: 15px;
+    padding: 0 3px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--em-ember);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.triad-status__add {
+    border-style: dashed;
+    color: var(--em-parchment-faint) !important;
+    font-size: 11px;
+}
+
+.triad-status__add:hover,
+.triad-status__add.is-active {
+    border-color: var(--em-clay);
+    color: var(--em-clay-light) !important;
+}
+
+.triad-picker {
+    flex-basis: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+    gap: var(--sp-1);
+    padding: var(--sp-1);
+    border: 1px solid var(--em-clay);
+    border-radius: var(--triad-radius);
+    background: var(--em-charcoal);
+}
+
+.triad-picker__option {
+    aspect-ratio: 1;
+    padding: 2px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+}
+
+.triad-picker__option:hover {
+    border-color: var(--em-clay);
+    background: var(--em-clay-soft);
+}
+
+.triad-picker__option img {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* ==========================================================================
+   Basic actions
+   ========================================================================== */
+
+.triad-basic {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: var(--sp-1) 4px;
+}
+
+.triad-basic__action {
+    position: relative;
+    aspect-ratio: 1;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--em-line);
+    border-radius: var(--triad-radius);
+    background: var(--em-charcoal-2);
+    color: var(--em-parchment-dim) !important;
+    font-size: 14px;
+    transition: all 0.15s;
+}
+
+#triad-tray .triad-basic__action {
+    width: 100%;
+    height: auto;
+    min-width: 0;
+}
+
+.triad-basic__action:hover {
+    border-color: var(--em-clay);
+    background: var(--em-clay-soft);
+    color: var(--em-parchment) !important;
+}
+
+.triad-basic__action .action-glyph {
+    position: absolute;
+    top: 1px;
+    right: 2px;
+    font-size: 9px;
+    color: var(--em-parchment-faint);
+}
+
+/* ==========================================================================
+   Sections, groups, rows
+   ========================================================================== */
+
+.triad-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    border-top: 1px solid var(--em-line);
+    padding-top: var(--sp-2);
+}
+
+.triad-section__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-family: var(--triad-font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--em-clay-light);
+    cursor: pointer;
+}
+
+.triad-section__header i,
+.triad-group__header > i {
+    font-size: 10px;
+    color: var(--em-parchment-faint);
+    transition: transform 0.15s;
+}
+
+.triad-section.is-collapsed .triad-section__header i,
+.triad-group.is-collapsed .triad-group__header > i {
+    transform: rotate(-90deg);
+}
+
+.triad-section__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+}
+
+.triad-group__header {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    margin: 0 0 var(--sp-1);
+    padding: 0 0 var(--sp-1);
+    border: none;
+    border-bottom: 1px dotted var(--em-line-strong);
+    font-family: var(--triad-font-display);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--em-parchment-dim);
+}
+
+.triad-group__title {
+    flex: 1;
+    cursor: pointer;
+}
+
+.triad-group__header > i {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.triad-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-1);
+}
+
+.triad-row {
+    border-radius: var(--triad-radius);
+    transition: background 0.12s;
+}
+
+.triad-row:hover {
+    background: rgba(234, 223, 196, 0.05);
+}
+
+.triad-row__main {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    min-height: 32px;
+    padding: 0 4px 0 0;
+}
+
+.triad-row__icon {
+    position: relative;
+    flex: 0 0 30px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid var(--em-line-strong);
+    border-radius: 5px;
+    background: var(--em-charcoal-2);
+    overflow: hidden;
+}
+
+.triad-row__icon img {
+    width: 100%;
+    height: 100%;
+    border: none;
+    object-fit: cover;
+}
+
+.triad-row__hover {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(180, 100, 62, 0.85);
+    color: var(--em-charcoal);
+    opacity: 0;
+    transition: opacity 0.12s;
+}
+
+.triad-row__icon:hover .triad-row__hover {
+    opacity: 1;
+}
+
+.triad-row__name {
+    flex: 1;
+    min-width: 0;
+    font-size: 13.5px;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.triad-row__name .action-glyph {
+    margin-left: 3px;
+    font-size: 13px;
+    color: var(--em-parchment-dim);
+}
+
+.triad-row__controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    flex-shrink: 0;
+}
+
+.triad-row.is-unready,
+.triad-row.is-expended {
+    opacity: 0.45;
+}
+
+.triad-row.is-expended .triad-row__name {
+    text-decoration: line-through;
+}
+
+.triad-row__summary {
+    margin: var(--sp-1) 0 var(--sp-1) 40px;
+    padding: var(--sp-1) var(--sp-2);
+    border-left: 2px solid var(--em-clay);
+    background: rgba(0, 0, 0, 0.25);
+    font-size: 12.5px;
+    color: var(--em-parchment-dim);
+}
+
+.triad-row__summary p {
+    margin: 0 0 var(--sp-1);
+}
+
+.triad-row__sheet {
+    display: inline-block;
+    margin-top: 0;
+    font-size: 11px;
+    color: var(--em-clay-light);
+    cursor: pointer;
+}
+
+/* --- Strike chips -------------------------------------------------------- */
+
+.triad-strike {
+    display: inline-flex;
+    gap: 2px;
+}
+
+.triad-chip {
+    min-width: 30px;
+    height: 24px;
+    padding: 0 5px;
+    border: 1px solid var(--em-line-strong);
+    border-radius: 4px;
+    background: var(--em-charcoal-2);
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    transition: all 0.12s;
+}
+
+/* The MAP button to use next this turn (first attack → 1st, then 2nd, then 3rd). */
+.triad-chip--attack.is-next {
+    border-color: var(--em-clay);
+    background: var(--em-clay-soft);
+    color: var(--em-parchment) !important;
+    box-shadow: 0 0 0 1px var(--em-clay-soft);
+}
+
+.triad-chip--damage,
+.triad-chip--crit {
+    min-width: 24px;
+    padding: 0;
+    font-size: 11px;
+}
+
+.triad-chip--damage { color: var(--em-clay-light) !important; }
+.triad-chip--crit { color: var(--em-ember) !important; }
+
+.triad-chip:hover {
+    border-color: var(--em-clay-light);
+    background: var(--em-clay);
+    color: var(--em-charcoal) !important;
+}
+
+/* --- Spells -------------------------------------------------------------- */
+
+.triad-spell-entry {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+}
+
+.triad-spell-entry__header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--sp-1);
+    margin-bottom: 0;
+}
+
+.triad-spell-entry__name {
+    flex: 1;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.triad-spell-entry__stats {
+    display: inline-flex;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--em-parchment-dim);
+    font-variant-numeric: tabular-nums;
+}
+
+.triad-spell__signature {
+    font-size: 10px;
+    color: var(--em-clay-light);
+}
+
+/* --- Skills -------------------------------------------------------------- */
+
+.triad-skills {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-1);
+}
+
+.triad-skill {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    padding: 0 var(--sp-1);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: var(--em-charcoal-2);
+    font-size: 12.5px;
+    text-align: left;
+}
+
+.triad-skill:hover {
+    border-color: var(--em-clay);
+}
+
+.triad-skill.is-lore {
+    font-style: italic;
+}
+
+.triad-skill__label {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.triad-skill__mod {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.triad-rank {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    display: grid;
+    place-items: center;
+    border-radius: 3px;
+    font-family: var(--triad-font-display);
+    font-size: 9px;
+    font-weight: 700;
+    background: var(--em-charcoal-3);
+    color: var(--em-parchment-faint);
+}
+
+.triad-rank--1 { background: #3f4a2a; color: #c9d6a4; }
+.triad-rank--2 { background: #284255; color: #a9cbe3; }
+.triad-rank--3 { background: #4a2c50; color: #dcb4e4; }
+.triad-rank--4 { background: #6a4a1a; color: #f0d199; }
+
+/* ==========================================================================
+   Utility footer
+   ========================================================================== */
+
+.triad-utility {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    padding-top: var(--sp-2);
+    border-top: 1px solid var(--em-line);
+}
+
+
+
+
+.triad-utility__button {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border: none;
+    background: var(--em-charcoal-2);
+    font-size: 11px;
+}
+
+.triad-utility__button {
+    border: 1px solid var(--em-line-strong);
+    border-radius: var(--triad-radius);
+    font-size: 12px;
+}
+
+.triad-utility__button:hover {
+    background: var(--em-clay-soft);
+    color: var(--em-parchment);
+}
+
+.triad-utility__button.is-active {
+    border-color: var(--em-ember);
+    color: var(--em-ember) !important;
+}
+
+/* ==========================================================================
+   Character tab
+   ========================================================================== */
+
+.triad-identity {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-1);
+}
+
+.triad-identity__card {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: var(--sp-1);
+    border: 1px solid var(--em-line);
+    border-radius: var(--triad-radius);
+    background: var(--em-charcoal-2);
+    text-align: left;
+}
+
+.triad-identity__card:hover {
+    border-color: var(--em-clay);
+}
+
+.triad-identity__card img {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    border: none;
+    border-radius: 4px;
+}
+
+.triad-identity__card span {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 2px;
+}
+
+.triad-identity__card em {
+    font-size: 9px;
+    font-family: var(--triad-font-display);
+    font-style: normal;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--em-parchment-faint);
+}
+
+.triad-identity__card strong {
+    font-size: 12px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.triad-attributes {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--sp-1);
+}
+
+.triad-attribute {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--sp-1) 0;
+    border-radius: var(--triad-radius);
+    background: var(--em-charcoal-2);
+    border: 1px solid var(--em-line);
+}
+
+.triad-attribute span {
+    font-family: var(--triad-font-display);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    color: var(--em-parchment-faint);
+}
+
+.triad-attribute strong {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.triad-facts {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.triad-fact {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 32px;
+    padding: var(--sp-1) 0;
+    border-bottom: 1px dotted var(--em-line);
+    font-size: 12.5px;
+}
+
+.triad-fact span {
+    color: var(--em-parchment-dim);
+}
+
+.triad-tags h3 {
+    margin: 0 0 var(--sp-1);
+    padding: 0;
+    border: none;
+    font-family: var(--triad-font-display);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--em-parchment-dim);
+}
+
+.triad-tags h3 i {
+    width: 14px;
+    color: var(--em-clay-light);
+}
+
+.triad-tags__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-1);
+}
+
+/* ==========================================================================
+   Empty state
+   ========================================================================== */
+
+.triad-empty {
+    height: 100%;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-2);
+    color: var(--em-parchment-faint);
+    text-align: center;
+}
+
+.triad-empty i {
+    font-size: 56px;
+    color: var(--em-clay-soft);
+}
+
+.triad-empty p {
+    max-width: 200px;
+    font-style: italic;
+}
+
+/* ==========================================================================
+   Error reporting
+   ========================================================================== */
+
+.triad-error {
+    margin-bottom: var(--sp-2);
+    padding: var(--sp-1) var(--sp-2);
+    border: 1px solid var(--em-ember);
+    border-radius: var(--triad-radius);
+    background: var(--em-ember-soft);
+    font-size: 12px;
+}
+
+.triad-error--soft {
+    border-color: var(--em-clay);
+    background: var(--em-clay-soft);
+}
+
+.triad-error p {
+    margin: 4px 0;
+    word-break: break-word;
+}
+
+.triad-error code {
+    font-size: 11px;
+    color: var(--em-clay-light);
+    background: none;
+    border: none;
+}
+
+.triad-error small {
+    color: var(--em-parchment-dim);
+    font-style: italic;
+}
+
+/* --- Elevation field ---------------------------------------------------- */
+
+#triad-tray .triad-elevation {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    height: 32px;
+    padding: 0 var(--sp-1);
+    margin-right: auto;
+    border: 1px solid var(--em-line-strong);
+    border-radius: var(--triad-radius);
+    background: var(--em-charcoal-2);
+    color: var(--em-parchment-faint);
+    font-size: 12px;
+    cursor: text;
+}
+
+#triad-tray .triad-elevation:focus-within {
+    border-color: var(--em-clay);
+}
+
+#triad-tray .triad-elevation input {
+    all: unset;
+    box-sizing: border-box;
+    width: 48px;
+    height: 24px;
+    color: var(--em-parchment);
+    font-family: var(--triad-font-body);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.triad-elevation__unit {
+    color: var(--em-parchment-faint);
+}
+
+/* --- Spell row controls --------------------------------------------------- */
+
+.triad-spell {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.triad-chip--cast,
+.triad-chip--chat {
+    min-width: 28px;
+    padding: 0;
+    font-size: 11px;
+}
+
+.triad-chip--cast {
+    border-color: var(--em-clay);
+    background: var(--em-clay-soft);
+    color: var(--em-clay-light) !important;
+}
+
+.triad-group__header {
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   Docks (panels hosted for other modules, e.g. First Strike)
+   ========================================================================== */
+
+.triad-dock-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--triad-width);
+    pointer-events: none;
+}
+
+.triad-dock {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    padding: var(--sp-2);
+    pointer-events: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--em-clay) transparent;
+}
+
+.triad-dock[hidden] {
+    display: none;
+}
+
+.triad-dock:empty {
+    pointer-events: none;
+}
+
+.triad-dock-empty {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-2);
+    color: var(--em-parchment-faint);
+    text-align: center;
+    font-style: italic;
+}
+
+.triad-dock-empty i {
+    font-size: 48px;
+    color: var(--em-clay-soft);
+}
+
+#triad-tray .triad-chip[disabled] {
+    opacity: 0.35;
+    cursor: default;
+}
+
+/* Hide the tray's own placeholder once the docked module has rendered something. */
+#triad-tray:has(.triad-dock:not([hidden]) > * > *) .triad-dock-empty {
+    display: none;
+}
+
+/* ==========================================================================
+   Reload
+   ========================================================================== */
+
+.triad-reload {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-1);
+    min-height: 32px;
+    margin: -4px 0 0;
+    padding: 0 4px 0 40px;   /* name column on the left, chip column on the right */
+    font-size: 12px;
+}
+
+#triad-tray .triad-chip--reload {
+    gap: 6px;
+    padding: 0 var(--sp-1);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#triad-tray .triad-chip--reload .action-glyph {
+    font-size: 12px;
+    color: var(--em-parchment-dim);
+}
+
+.triad-reload.is-empty .triad-chip--reload {
+    border-color: var(--em-ember);
+    color: var(--em-ember) !important;
+}
+
+.triad-reload__state {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    color: var(--em-parchment-dim);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.triad-reload__state i {
+    font-size: 9px;
+    color: var(--em-moss);
+}
+
+.triad-reload.is-empty .triad-reload__state i {
+    color: var(--em-ember);
+}
+
+.triad-reload__state em {
+    color: var(--em-parchment-faint);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.triad-reload-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0 4px var(--sp-1) 40px;
+    padding: var(--sp-1);
+    border: 1px solid var(--em-clay);
+    border-radius: var(--triad-radius);
+    background: var(--em-charcoal);
+}
+
+.triad-reload-picker__option {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    font-size: 12px;
+}
+
+.triad-reload-picker__option.is-depleted {
+    opacity: 0.4;
+}
+
+.triad-reload-picker__option img {
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 4px;
+}
+
+.triad-reload-picker__name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.triad-reload-picker__empty {
+    margin: 0;
+    font-size: 12px;
+    font-style: italic;
+    color: var(--em-parchment-faint);
+}
+
+/* ==========================================================================
+   Targeting
+   ========================================================================== */
+
+.triad-utility__spacer {
+    margin-right: auto;
+}
+
+#triad-tray .triad-utility__target {
+    cursor: grab;
+}
+
+#triad-tray .triad-utility__target.is-active {
+    border-color: var(--em-ember);
+    background: var(--em-ember-soft);
+    color: var(--em-ember);
+    animation: triad-pulse 1.2s ease-in-out infinite;
+}
+
+body.triad-targeting #board {
+    cursor: crosshair !important;
+}
+
+@keyframes triad-pulse {
+    50% { box-shadow: 0 0 0 4px var(--em-ember-soft); }
+}
+
+/* ==========================================================================
+   Drag to token
+   ========================================================================== */
+
+.triad-drag-ghost {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px;
+    border: 1px solid var(--em-clay);
+    border-radius: var(--triad-radius);
+    background: rgba(28, 26, 23, 0.92);
+    color: var(--em-parchment);
+    font-family: var(--triad-font-body);
+    font-size: 12px;
+    pointer-events: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.triad-drag-ghost img {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 4px;
+}
+
+.triad-drag-ghost > i {
+    width: 32px;
+    text-align: center;
+    font-size: 18px;
+    color: var(--em-ember);
+}
+
+.triad-drag-ghost__label:empty {
+    display: none;
+}
+
+.triad-drag-ghost.is-over-token {
+    border-color: var(--em-ember);
+    box-shadow: 0 0 0 2px var(--em-ember-soft), 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+body.triad-dragging,
+body.triad-dragging * {
+    cursor: crosshair !important;
+}
+
+#triad-tray [data-token-drag],
+#triad-tray [data-token-drag] img {
+    touch-action: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.triad-row__name[draggable="true"] {
+    cursor: pointer;
+}
+
+.triad-row__star {
+    margin-right: 2px;
+    font-size: 10px;
+    color: var(--em-clay-light);
+}
+
+.triad-row__links {
+    display: flex;
+    gap: var(--sp-2);
+    margin-top: var(--sp-1);
+}
+
+/* ==========================================================================
+   Sustained spells & recovery
+   ========================================================================== */
+
+.triad-sustain {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: var(--sp-1);
+    border: 1px dashed var(--em-clay);
+    border-radius: var(--triad-radius);
+}
+
+.triad-sustain__label {
+    font-family: var(--triad-font-display);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--em-clay-light);
+}
+
+.triad-sustain__item {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    font-size: 13px;
+}
+
+.triad-sustain__item img {
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 4px;
+}
+
+.triad-sustain__item span {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#triad-tray .triad-sustain__item .triad-chip {
+    gap: 4px;
+    padding: 0 var(--sp-1);
+}
+
+#triad-tray .triad-button--danger {
+    height: 40px;
+    border-color: var(--em-ember);
+    background: var(--em-ember);
+    color: var(--em-parchment);
+    animation: triad-pulse 1.6s ease-in-out infinite;
+}
+
+#triad-tray .triad-button--danger:hover {
+    background: #d9553e;
+}
+
+/* ==========================================================================
+   Roll option toggles
+   ========================================================================== */
+
+.triad-toggles {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-1);
+}
+
+.triad-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    min-height: 32px;
+    font-size: 13.5px;
+}
+
+.triad-toggle.is-disabled {
+    opacity: 0.45;
+}
+
+.triad-toggle__label {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.25;
+}
+
+#triad-tray .triad-switch {
+    position: relative;
+    flex: 0 0 32px;
+    width: 32px;
+    height: 18px;
+    padding: 0;
+    border: 1px solid var(--em-line-strong);
+    border-radius: 999px;
+    background: var(--em-charcoal-3);
+    transition: background 0.15s, border-color 0.15s;
+}
+
+#triad-tray .triad-switch::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--em-parchment-faint);
+    transition: transform 0.15s, background 0.15s;
+}
+
+#triad-tray .triad-switch.is-on {
+    border-color: var(--em-clay);
+    background: var(--em-clay);
+}
+
+#triad-tray .triad-switch.is-on::after {
+    transform: translateX(14px);
+    background: var(--em-parchment);
+}
+
+#triad-tray .triad-switch.is-locked {
+    opacity: 0.6;
+}
+
+#triad-tray .triad-switch:disabled {
+    cursor: default;
+}
+
+#triad-tray .triad-select {
+    all: unset;
+    box-sizing: border-box;
+    max-width: 50%;
+    height: 24px;
+    line-height: 22px;
+    padding: 0 22px 0 var(--sp-1);
+    border: 1px solid var(--em-line-strong);
+    border-radius: 4px;
+    background: var(--em-charcoal-2)
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' fill='none' stroke='%23b9ab8d' stroke-width='1.4'/></svg>")
+        no-repeat right 7px center / 9px 6px;
+    color: var(--em-parchment);
+    font-family: var(--triad-font-body);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+#triad-tray .triad-select:hover,
+#triad-tray .triad-select:focus {
+    border-color: var(--em-clay);
+}
+
+#triad-tray .triad-select:disabled {
+    cursor: default;
+    background-image: none;
+    padding-right: var(--sp-1);
+    color: var(--em-parchment-dim);
+}
+
+#triad-tray .triad-select option {
+    background: var(--em-charcoal);
+    color: var(--em-parchment);
+}
+
+/* ==========================================================================
+   Skill picker (Recall Knowledge)
+   ========================================================================== */
+
+#triad-tray .triad-basic__action.is-active {
+    border-color: var(--em-clay);
+    background: var(--em-clay-soft);
+    color: var(--em-parchment) !important;
+}
+
+.triad-skill-pick {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-1);
+    padding: var(--sp-1);
+    border: 1px solid var(--em-clay);
+    border-radius: var(--triad-radius);
+    background: var(--em-charcoal);
+}
+
+.triad-skill-pick__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--triad-font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--em-clay-light);
+}
+
+.triad-skill-pick__header em {
+    font-family: var(--triad-font-body);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--em-parchment-dim);
+}
+
+#triad-tray .triad-skill-pick__close {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    color: var(--em-parchment-faint);
+}
+
+#triad-tray .triad-skill-pick__close:hover {
+    color: var(--em-parchment);
+    background: var(--em-charcoal-3);
+}
+
+/* Recall Knowledge picker: one skill per row, never squeezed. */
+.triad-skill-pick .triad-skills {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+#triad-tray .triad-skill.is-recommended {
+    border-color: var(--em-moss);
+    background: var(--em-moss-soft);
+}
+
+/* Dot on a dock tab: something new inside (set by the docked module). */
+#triad-tray .triad-rail__tab {
+    position: relative;
+}
+
+.triad-rail__badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--em-ember);
+    box-shadow: 0 0 0 2px var(--em-charcoal-2);
+    pointer-events: none;
+}
+
+/* Name + one-line facts (spells: range · area · duration · defense). */
+.triad-row__text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.triad-row__text .triad-row__name {
+    flex: none;
+}
+
+.triad-row__meta {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11.5px;
+    color: var(--em-parchment-faint);
+    cursor: pointer;
+}
+
+.triad-details {
+    margin: 0 0 var(--sp-1);
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 4px var(--sp-1);
+    font-size: 12px;
+}
+
+.triad-details div {
+    display: contents;
+}
+
+.triad-details dt {
+    font-family: var(--triad-font-display);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--em-clay-light);
+    padding-top: 2px;
+}
+
+.triad-details dd {
+    margin: 0;
+    color: var(--em-parchment);
+}

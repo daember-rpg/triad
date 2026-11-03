@@ -1,0 +1,77 @@
+<header class="triad-header">
+    <div class="triad-portrait triad-portrait--{{header.hp.tier}}" data-action="openActor" data-tooltip="{{localize "TRIAD.OpenSheet"}}">
+        <img src="{{header.img}}" alt="">
+        <span class="triad-portrait__wound" style="height: {{header.hp.missingPct}}%"></span>
+        {{#if header.isDown}}<span class="triad-portrait__down"><i class="fa-solid fa-skull" inert></i></span>{{/if}}
+        <span class="triad-portrait__level">{{header.level}}</span>
+    </div>
+
+    <div class="triad-header__info">
+        <div class="triad-header__title">
+            <h1 class="triad-name" data-overflow-tip="{{header.name}}">{{header.name}}</h1>
+            {{#if header.subtitle}}<p class="triad-subtitle" data-overflow-tip="{{header.subtitle}}">{{header.subtitle}}</p>{{/if}}
+        </div>
+
+        <div class="triad-hp {{#if header.hp.temp}}has-temp{{/if}}">
+            {{#if (eq @root.editingHp "value")}}
+                <input class="triad-hp__input" type="text" inputmode="numeric" data-hp-input="value" value="{{header.hp.value}}">
+            {{else}}
+                <button type="button" class="triad-hp__bar triad-hp__bar--{{header.hp.tier}}" data-action="editHp" data-field="value"
+                        data-tooltip="{{localize "TRIAD.HP.EditHint"}}">
+                    <span class="triad-hp__fill" style="width: {{header.hp.pct}}%"></span>
+                    <span class="triad-hp__label"><i class="fa-solid fa-heart" inert></i> {{header.hp.value}} / {{header.hp.max}}</span>
+                </button>
+            {{/if}}
+            {{#if (eq @root.editingHp "temp")}}
+                <input class="triad-hp__input triad-hp__input--temp" type="text" inputmode="numeric" data-hp-input="temp" value="{{header.hp.temp}}">
+            {{else}}
+                <button type="button" class="triad-hp__temp" data-action="editHp" data-field="temp" data-tooltip="{{localize "TRIAD.HP.Temp"}}">
+                    {{#if header.hp.temp}}+{{header.hp.temp}}{{else}}{{localize "TRIAD.HP.TempShort"}}{{/if}}
+                </button>
+            {{/if}}
+        </div>
+
+        {{#if header.shield}}
+            <div class="triad-shield {{#if header.shield.raised}}is-raised{{/if}} {{#if header.shield.broken}}is-broken{{/if}}"
+                 data-tooltip="{{header.shield.name}} · {{localize "TRIAD.Shield.Hardness"}} {{header.shield.hardness}}">
+                <i class="fa-solid fa-shield-halved" inert></i>
+                <span class="triad-shield__bar"><span style="width: {{header.shield.pct}}%"></span></span>
+                <span class="triad-shield__value">{{header.shield.hp}}/{{header.shield.maxHp}}</span>
+            </div>
+        {{/if}}
+    </div>
+</header>
+
+<div class="triad-stats">
+    <div class="triad-stat triad-stat--ac" data-tooltip="{{localize "TRIAD.Stat.AC"}}">
+        <span class="triad-stat__value">{{header.ac}}</span><span class="triad-stat__label">{{localize "TRIAD.Stat.ACShort"}}</span>
+    </div>
+    <button type="button" class="triad-stat" data-action="rollPerception" data-tooltip="{{localize "TRIAD.Stat.Perception"}}">
+        <span class="triad-stat__value">{{header.perception}}</span><span class="triad-stat__label">{{localize "TRIAD.Stat.PerceptionShort"}}</span>
+    </button>
+    {{#each header.saves as |save|}}
+        <button type="button" class="triad-stat" data-action="rollSave" data-save="{{save.slug}}" data-tooltip="{{save.label}}">
+            <span class="triad-stat__value">{{save.mod}}</span><span class="triad-stat__label">{{save.short}}</span>
+        </button>
+    {{/each}}
+</div>
+
+{{#if header.canRecover}}
+    <button type="button" class="triad-button triad-button--danger triad-button--wide" data-action="recoveryCheck">
+        <i class="fa-solid fa-heart-pulse" inert></i> {{localize "TRIAD.Recovery"}} · {{localize "TRIAD.Dying"}} {{header.dying.value}}/{{header.dying.max}}
+    </button>
+{{/if}}
+
+{{#if (or header.heroPoints header.dying header.wounded header.doomed)}}
+    <div class="triad-resources">
+        {{#if header.heroPoints}}
+            <span class="triad-resource" data-tooltip="{{localize "TRIAD.HeroPoints"}}">
+                <i class="fa-solid fa-star" inert></i>
+                {{> triad-pips pips=header.heroPoints action="heroPip" class="triad-pips--hero"}}
+            </span>
+        {{/if}}
+        {{#if header.dying}}<span class="triad-badge triad-badge--dying">{{localize "TRIAD.Dying"}} {{header.dying.value}}</span>{{/if}}
+        {{#if header.wounded}}<span class="triad-badge triad-badge--wounded">{{localize "TRIAD.Wounded"}} {{header.wounded.value}}</span>{{/if}}
+        {{#if header.doomed}}<span class="triad-badge triad-badge--doomed">{{localize "TRIAD.Doomed"}} {{header.doomed.value}}</span>{{/if}}
+    </div>
+{{/if}}

@@ -1,0 +1,7 @@
+{{#> triad-row itemId=id useAction="useItem" useTooltip=(localize "TRIAD.Consume")}}
+    {{#if uses}}<span class="triad-tag" data-tooltip="{{localize "TRIAD.Uses"}}">{{uses.value}}/{{uses.max}}</span>{{/if}}
+    <span class="triad-tag triad-tag--qty">×{{quantity}}</span>
+    <button type="button" class="triad-chip triad-chip--cast" data-action="useItem" data-tooltip="{{localize "TRIAD.ConsumeButton"}}"
+            {{#unless quantity}}disabled{{/unless}}><i class="fa-solid fa-flask" inert></i></button>
+    <button type="button" class="triad-chip triad-chip--chat" data-action="postToChat" data-tooltip="{{localize "TRIAD.PostToChat"}}"><i class="fa-solid fa-comment" inert></i></button>
+{{/triad-row}}

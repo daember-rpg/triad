@@ -1,0 +1,10 @@
+{{#each data as |group|}}
+    <div class="triad-group">
+        <h3 class="triad-group__header"><span class="triad-group__title">{{localize group.label}}</span></h3>
+        <ul class="triad-list">
+            {{#each group.rows as |row|}}
+                {{> triad-ability-row row}}
+            {{/each}}
+        </ul>
+    </div>
+{{/each}}

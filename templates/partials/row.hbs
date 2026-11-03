@@ -1,0 +1,39 @@
+{{!-- Generic item row. Expects: uuid, name, img, glyph, useAction, useTooltip; optional itemId, summary, meta (one line under the name), details ([{label, value}]), isFavorite, rowClass.
+      The icon uses the item on click and can be dragged onto a token (target + use).
+      The name toggles the description and drags to the hotbar. --}}
+<li class="triad-row {{rowClass}}" data-uuid="{{uuid}}" data-drag-uuid="{{uuid}}" {{#if itemId}}data-item-id="{{itemId}}"{{/if}}>
+    <div class="triad-row__main">
+        <button type="button" class="triad-row__icon" data-action="{{useAction}}" data-context="post" data-uuid="{{uuid}}"
+                data-token-drag="use" data-img="{{img}}" data-tooltip="{{useTooltip}}">
+            <img src="{{img}}" alt="" draggable="false">
+            <i class="fa-solid fa-dice-d20 triad-row__hover" inert></i>
+        </button>
+        <span class="triad-row__text">
+            <span class="triad-row__name" data-action="toggleSummary" draggable="true" data-overflow-tip="{{name}}">
+                {{#if isFavorite}}<i class="fa-solid fa-star triad-row__star" inert></i>{{/if}}
+                {{name}}
+                {{#if glyph}}<span class="action-glyph">{{glyph}}</span>{{/if}}
+            </span>
+            {{#if meta}}<span class="triad-row__meta" data-action="toggleSummary" data-overflow-tip="{{meta}}">{{meta}}</span>{{/if}}
+        </span>
+        <span class="triad-row__controls">{{> @partial-block}}</span>
+    </div>
+    {{#if summary}}
+        <div class="triad-row__summary">
+            {{#if details.length}}
+                <dl class="triad-details">
+                    {{#each details as |d|}}<div><dt>{{d.label}}</dt><dd>{{d.value}}</dd></div>{{/each}}
+                </dl>
+            {{/if}}
+            {{{summary}}}
+            <div class="triad-row__links">
+                <a class="triad-row__sheet" data-action="toggleFavorite">
+                    <i class="{{#if isFavorite}}fa-solid{{else}}fa-regular{{/if}} fa-star" inert></i>
+                    {{#if isFavorite}}{{localize "TRIAD.Favorite.Remove"}}{{else}}{{localize "TRIAD.Favorite.Add"}}{{/if}}
+                </a>
+                <a class="triad-row__sheet" data-action="postToChat"><i class="fa-solid fa-comment" inert></i> {{localize "TRIAD.PostToChat"}}</a>
+                <a class="triad-row__sheet" data-action="openSheet"><i class="fa-solid fa-up-right-from-square" inert></i> {{localize "TRIAD.OpenItem"}}</a>
+            </div>
+        </div>
+    {{/if}}
+</li>

@@ -1,0 +1,8 @@
+<ul class="triad-list">
+    {{#each data as |fav|}}
+        {{#if fav.isStrike}}{{> triad-strike-row fav.row}}{{/if}}
+        {{#if fav.isSpell}}{{> triad-spell-row fav.row}}{{/if}}
+        {{#if fav.isAbility}}{{> triad-ability-row fav.row}}{{/if}}
+        {{#if fav.isConsumable}}{{> triad-consumable-row fav.row}}{{/if}}
+    {{/each}}
+</ul>

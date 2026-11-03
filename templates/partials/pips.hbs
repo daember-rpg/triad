@@ -1,0 +1,5 @@
+<span class="triad-pips {{class}}">
+    {{#each pips as |pip|}}
+        <button type="button" class="triad-pip {{#if pip.filled}}is-filled{{/if}}" data-action="{{../action}}" data-index="{{pip.index}}"></button>
+    {{/each}}
+</span>

@@ -1,0 +1,8 @@
+{{#> triad-row useAction="castSpell" useTooltip=(localize "TRIAD.Spell.Cast")}}
+    <span class="triad-spell" data-entry-id="{{entryId}}" data-spell-id="{{id}}" data-rank="{{castRank}}" data-slot-id="{{slotId}}">
+        {{#if time}}<span class="triad-tag">{{time}}</span>{{/if}}
+        {{#if signature}}<i class="fa-solid fa-star triad-spell__signature" data-tooltip="{{localize "TRIAD.Spell.Signature"}}" inert></i>{{/if}}
+        <button type="button" class="triad-chip triad-chip--cast" data-action="castSpell" data-tooltip="{{localize "TRIAD.Spell.CastButton"}}"><i class="fa-solid fa-wand-sparkles" inert></i></button>
+        <button type="button" class="triad-chip triad-chip--chat" data-action="postToChat" data-tooltip="{{localize "TRIAD.PostToChat"}}"><i class="fa-solid fa-comment" inert></i></button>
+    </span>
+{{/triad-row}}

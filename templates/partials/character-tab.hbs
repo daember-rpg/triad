@@ -1,0 +1,62 @@
+<div class="triad-tab triad-tab--character">
+    <div class="triad-block">{{> triad-header}}</div>
+
+    <div class="triad-block">
+        {{#if character.identity.length}}
+            <div class="triad-identity">
+                {{#each character.identity as |card|}}
+                    <button type="button" class="triad-identity__card" data-action="openSheet" data-uuid="{{card.uuid}}">
+                        <img src="{{card.img}}" alt="">
+                        <span><em>{{card.label}}</em><strong data-overflow-tip="{{card.name}}">{{card.name}}</strong></span>
+                    </button>
+                {{/each}}
+            </div>
+        {{/if}}
+
+        <div class="triad-attributes">
+            {{#each character.attributes as |attribute|}}
+                <div class="triad-attribute"><span>{{attribute.label}}</span><strong>{{attribute.mod}}</strong></div>
+            {{/each}}
+        </div>
+
+        <div class="triad-facts">
+            {{#if header.classDC}}
+                <div class="triad-fact"><span>{{localize "TRIAD.Stat.ClassDC"}}</span><strong>{{header.classDC}}</strong></div>
+            {{/if}}
+            {{#each character.speeds as |speed|}}
+                <div class="triad-fact"><span>{{speed.label}}</span><strong>{{speed.value}} ft</strong></div>
+            {{/each}}
+            {{#if header.focus}}
+                <div class="triad-fact">
+                    <span>{{localize "TRIAD.Spell.Focus"}}</span>
+                    {{> triad-pips pips=header.focus action="focusPip" class="triad-pips--focus"}}
+                </div>
+            {{/if}}
+        </div>
+    </div>
+
+    {{#if character.tagGroups.length}}
+        <div class="triad-block">
+            {{#each character.tagGroups as |group|}}
+                <section class="triad-tags">
+                    <h3><i class="{{group.icon}}" inert></i> {{localize group.label}}</h3>
+                    <div class="triad-tags__list">
+                        {{#each group.tags as |tag|}}
+                            <span class="triad-tag">{{tag.label}}{{#if tag.value}} <em>{{tag.value}}</em>{{/if}}</span>
+                        {{/each}}
+                    </div>
+                </section>
+            {{/each}}
+        </div>
+    {{/if}}
+
+    {{#each sections as |section|}}
+        {{#if (eq section.id "skills")}}{{> triad-section section}}{{/if}}
+    {{/each}}
+
+    {{#if character.canRest}}
+        <button type="button" class="triad-button triad-button--wide" data-action="rest">
+            <i class="fa-solid fa-campground" inert></i> {{localize "TRIAD.Rest"}}
+        </button>
+    {{/if}}
+</div>

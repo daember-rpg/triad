@@ -1,0 +1,5 @@
+{{#> triad-row itemId=id useAction="useItem" useTooltip=(localize "TRIAD.Use")}}
+    {{#if frequency}}<span class="triad-tag" data-tooltip="{{localize "TRIAD.Frequency"}}">{{frequency.value}}/{{frequency.max}}</span>{{/if}}
+    <button type="button" class="triad-chip triad-chip--cast" data-action="useItem" data-tooltip="{{localize "TRIAD.UseButton"}}"><i class="fa-solid fa-play" inert></i></button>
+    <button type="button" class="triad-chip triad-chip--chat" data-action="postToChat" data-tooltip="{{localize "TRIAD.PostToChat"}}"><i class="fa-solid fa-comment" inert></i></button>
+{{/triad-row}}
