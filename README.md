@@ -70,7 +70,10 @@ lang/               en
 ```
 
 ## Credits
-Concept inspired by **CRUX** by Relic (MIT), itself a continuation of **Action Pack** by Tero Parvinen. Triad is a ground-up rewrite for PF2e; no CRUX code or assets are reused.
+Design, UI and concept by **Fernando Melo** (Hello Melo Design).
+Developed with Claude (Anthropic).
+
+Thanks to the authors of **CRUX**, whose open-source code was a helpful reference for the PF2e system APIs.
 
 ## Integration API (docks)
 Other modules can host a panel inside the tray as its own tab:
