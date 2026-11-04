@@ -34,7 +34,9 @@ Hooks.once("ready", async () => {
         focusTab: tab => tray.focusTab(tab),
         registerDock: config => tray.registerDock(config),
         hasDock: id => tray.hasDock(id),
-        setDockBadge: (id, value) => tray.setDockBadge(id, value)
+        setDockBadge: (id, value) => tray.setDockBadge(id, value),
+        registerTool: config => tray.registerTool(config),
+        hasTool: id => tray.hasTool(id)
     };
     game.triad = { tray, api };
     await tray.render({ force: true });

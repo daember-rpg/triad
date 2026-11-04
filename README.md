@@ -83,6 +83,16 @@ Hooks.on("triad.ready", api => {
   host.appendChild(myElement);   // the element survives Triad re-renders
 });
 ```
+Modules can also add a button to the utility bar (next to the sheet button) for the character on display:
+```js
+Hooks.on("triad.ready", api => {
+  api.registerTool({ id: "attune", label: "Attune", icon: "fa-solid fa-gem",
+                     visible: actor => actor.type === "character",
+                     onClick: actor => openMyWindow(actor) });
+});
+```
+`api.hasTool(id)` tells a module whether its button is in the tray (Attune uses it to leave the character sheet).
+
 `api.focusTab(id)` opens the tray on a tab; `api.hasDock(id)` checks registration; `api.setDockBadge(id, true)` shows a dot on that tab. The `triad.layout` hook fires whenever the tray opens or closes, so overlays can keep clear of it.
 
 > **Note:** Persona and First Strike are companion modules that are **still in development** and not publicly released yet. Triad works fully on its own; the integrations below take effect once they are installed.

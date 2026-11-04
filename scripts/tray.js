@@ -75,7 +75,8 @@ export class TriadTray extends HandlebarsApplicationMixin(ApplicationV2) {
             recoveryCheck: TriadTray.#onRecoveryCheck,
             sustain: TriadTray.#onSustain,
             tokenConfig: TriadTray.#onTokenConfig,
-            rest: TriadTray.#onRest
+            rest: TriadTray.#onRest,
+            tool: TriadTray.#onTool
         }
     };
 
@@ -89,6 +90,8 @@ export class TriadTray extends HandlebarsApplicationMixin(ApplicationV2) {
     #tab = "actions";
     /** External panels hosted by the tray (e.g. First Strike's initiative tracker). */
     #docks = new Map();
+    /** Utility-bar buttons other modules add for the character on display. */
+    #tools = new Map();
     #open = false;
     #dirty = false;
     #expanded = new Set();
@@ -200,6 +203,51 @@ export class TriadTray extends HandlebarsApplicationMixin(ApplicationV2) {
 
     hasDock(id) {
         return this.#docks.has(id);
+    }
+
+    /**
+     * Adds a button to the tray's utility bar for the character on display — the way another module
+     * (e.g. Attune) puts its entry point in the tray instead of on the character sheet.
+     * @param {object} config
+     * @param {string} config.id          Unique id
+     * @param {string} config.label       Tooltip (plain text or localization key)
+     * @param {string} [config.icon]      Font Awesome classes
+     * @param {number} [config.order]     Position among the extra buttons (lower first)
+     * @param {(actor: Actor, event: Event) => unknown} config.onClick
+     * @param {(actor: Actor) => boolean} [config.visible]  Hide the button for some actors
+     */
+    registerTool({ id, label, icon = "fa-solid fa-puzzle-piece", order = 50, onClick, visible = null }) {
+        if (!id || typeof onClick !== "function") throw new Error(`${MODULE_ID} | registerTool needs an id and an onClick`);
+        this.#tools.set(id, { id, label, icon, order, onClick, visible });
+        if (this.rendered) this.render();
+    }
+
+    hasTool(id) {
+        return this.#tools.has(id);
+    }
+
+    #toolsFor(actor) {
+        return [...this.#tools.values()]
+            .filter(tool => {
+                try {
+                    return tool.visible ? tool.visible(actor) !== false : true;
+                } catch (error) {
+                    console.warn(`${MODULE_ID} | tool "${tool.id}" visibility check failed`, error);
+                    return false;
+                }
+            })
+            .sort((a, b) => a.order - b.order)
+            .map(({ id, label, icon }) => ({ id, label, icon }));
+    }
+
+    static async #onTool(event, target) {
+        const tool = this.#tools.get(target.dataset.tool);
+        if (!tool || !this.#actor) return;
+        try {
+            await tool.onClick(this.#actor, event);
+        } catch (error) {
+            console.error(`${MODULE_ID} | tool "${tool.id}" failed`, error);
+        }
     }
 
     /** Shows a dot on a dock's tab (e.g. something new to look at). */
@@ -330,7 +378,8 @@ export class TriadTray extends HandlebarsApplicationMixin(ApplicationV2) {
             pickerOpen: this.#pickerOpen,
             reloadPicker: this.#reloadPicker,
             fatalError: null,
-            actor: null
+            actor: null,
+            tools: this.#actor ? this.#toolsFor(this.#actor) : []
         };
         if (!this.#actor || dock) return context;
 

@@ -18,5 +18,9 @@
             <button type="button" class="triad-utility__button" data-action="tokenConfig" data-tooltip="{{localize "TRIAD.Utility.TokenConfig"}}"><i class="fa-solid fa-gear" inert></i></button>
         {{/if}}
     {{/if}}
+    {{#each @root.tools as |tool|}}
+        <button type="button" class="triad-utility__button" data-action="tool" data-tool="{{tool.id}}"
+                data-tooltip="{{localize tool.label}}" aria-label="{{localize tool.label}}"><i class="{{tool.icon}}" inert></i></button>
+    {{/each}}
     <button type="button" class="triad-utility__button" data-action="openActor" data-tooltip="{{localize "TRIAD.OpenSheet"}}"><i class="fa-solid fa-book" inert></i></button>
 </footer>
