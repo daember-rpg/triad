@@ -43,3 +43,40 @@
         </li>
     {{/if}}
 {{/if}}
+{{#if bomb}}
+    <li class="triad-reload triad-bomb {{#unless bomb.loaded}}is-empty{{/unless}}" data-weapon-id="{{bomb.weaponId}}">
+        <span class="triad-reload__state">
+            <i class="fa-solid fa-bomb" inert></i>
+            {{#if bomb.loaded}}
+                {{bomb.loaded.remaining}}/{{bomb.loaded.max}}
+                <em data-overflow-tip="{{bomb.loaded.name}}">{{bomb.loaded.damage}} · {{bomb.loaded.name}}</em>
+            {{else}}
+                <em>{{localize "TRIAD.Bomb.Empty"}}</em>
+            {{/if}}
+        </span>
+        {{#if bomb.loaded}}
+            <button type="button" class="triad-chip triad-chip--reload" data-action="unloadBomb"
+                    data-tooltip="{{#if bomb.loaded.fired}}{{localize "TRIAD.Bomb.UnloadFired"}}{{else}}{{localize "TRIAD.Bomb.UnloadHint"}}{{/if}}">
+                <i class="fa-solid fa-eject" inert></i> {{localize "TRIAD.Bomb.Unload"}}
+            </button>
+        {{else}}
+            <button type="button" class="triad-chip triad-chip--reload" data-action="bomb" data-tooltip="{{localize "TRIAD.Bomb.Hint"}}">
+                <i class="fa-solid fa-bomb" inert></i> {{localize "TRIAD.Bomb.Load"}} <span class="action-glyph">1</span>
+            </button>
+        {{/if}}
+    </li>
+    {{#if (eq @root.bombPicker bomb.weaponId)}}
+        <li class="triad-reload-picker" data-weapon-id="{{bomb.weaponId}}">
+            {{#each bomb.options as |option|}}
+                <div class="triad-reload-picker__option">
+                    <img src="{{option.img}}" alt="">
+                    <span class="triad-reload-picker__name" data-overflow-tip="{{option.name}}">{{option.name}}</span>
+                    <span class="triad-tag">{{option.damage}} ×{{option.quantity}}</span>
+                    <button type="button" class="triad-chip" data-action="pickBomb" data-bomb-id="{{option.id}}" data-tooltip="{{localize "TRIAD.Bomb.Load"}}"><i class="fa-solid fa-bomb" inert></i></button>
+                </div>
+            {{else}}
+                <p class="triad-reload-picker__empty">{{localize "TRIAD.Bomb.NoBombs"}}</p>
+            {{/each}}
+        </li>
+    {{/if}}
+{{/if}}

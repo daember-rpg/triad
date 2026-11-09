@@ -35,6 +35,7 @@ Requires the **pf2e** system. **socketlib** is recommended (players' End Turn an
 - **Favorites**: pin any Strike, spell, action or consumable (expand it → *Add to favorites*); pinned rows appear at the top.
 - **Drag to token**: drag a Strike/spell/action/consumable icon onto a token on the map to target it and use it in one move.
 - **Strikes** with three MAP buttons (the next one this turn is highlighted — attack rolls from the tray or the sheet are counted; the icon rolls the next MAP), damage and critical (thrown/combination alt usages included). Weapons with Reload show a Reload line (loaded/capacity, ammo name); one ammo type loads directly, several open an ammo picker (+1 or load all). Same behaviour as PF2e's own reloader, including the Interact (Reload) chat card in combat.
+- **Alchemical Crossbow** gets a bomb line under its Reload line: *Load bomb* (1 action, Interact) takes a lesser energy bomb from the inventory and adds +1d6 of its damage type to the crossbow's next three attacks. A counter tracks the attacks left (rolls from the tray or the sheet count), the first attack starts the 1-minute window, and *Unload* returns an unfired bomb to the inventory.
 - **Spells** by entry and rank via `entry.getSheetData()`: a line under each name with range · area · duration · defense, and the full list (cast time, range, area, targets, defense, duration, cost, requirements, traits) when expanded; cast (icon or wand button) with slot consumption, post to chat without casting (speech-bubble button), spontaneous slot pips, prepared expended state, focus points.
 - **Actions & Reactions** (action/feat items with an action cost): ▶ uses the ability through `game.pf2e.rollItemMacro` — the chat card carries the area template, save and damage links for everyone (e.g. Breath Weapon); 💬 posts it without using it.
 - **Consumables** (quantity, uses) via `item.consume()`.
@@ -64,6 +65,7 @@ scripts/
   relay.js          GM relay (socketlib) for End Turn and turn-tracker writes made by players
   use.js            use Strikes/spells/items and spend actions (shared by clicks and drags)
   targeting.js      crosshair pick mode + pointer drag-to-token
+  alchemical-crossbow.js  load/unload a bomb in the Alchemical Crossbow, count down its attacks
 templates/          tray.hbs + partials/
 styles/triad.css    Embermark design language
 lang/               en

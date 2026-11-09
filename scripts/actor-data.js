@@ -6,6 +6,7 @@ import { MODULE_ID, BASIC_ACTION_ICONS, SAVE_SLUGS, ATTRIBUTE_SLUGS, RANK_LETTER
 import { getSetting, isSectionEnabled } from "./settings.js";
 import { actionGlyph, enrich, localizeLabel, percent, pips, signed } from "./helpers.js";
 import { pendingMoveActions } from "./turn-state.js";
+import { bombState } from "./alchemical-crossbow.js";
 
 /**
  * @param {object} params
@@ -453,6 +454,7 @@ async function strikeRow(strike, { index, alt }, summaryFor, parent = null) {
         hasDamage: typeof strike.damage === "function",
         hasCritical: typeof strike.critical === "function",
         reload: parent ? null : buildReload(item),
+        bomb: parent ? null : bombState(item),
         summary: item ? await summaryFor(item) : null
     };
 }

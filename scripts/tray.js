@@ -4,6 +4,7 @@ import { buildActorContext } from "./actor-data.js";
 import * as Ops from "./actor-actions.js";
 import { startTargetPick, isPicking, trackTokenDrag, targetToken } from "./targeting.js";
 import * as Use from "./use.js";
+import * as Bomb from "./alchemical-crossbow.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -53,6 +54,9 @@ export class TriadTray extends HandlebarsApplicationMixin(ApplicationV2) {
             castSpell: TriadTray.#onCastSpell,
             reload: TriadTray.#onReload,
             loadAmmo: TriadTray.#onLoadAmmo,
+            bomb: TriadTray.#onBomb,
+            pickBomb: TriadTray.#onPickBomb,
+            unloadBomb: TriadTray.#onUnloadBomb,
             postToChat: TriadTray.#onPostToChat,
             slotPip: TriadTray.#onSlotPip,
             focusPip: TriadTray.#onFocusPip,
@@ -99,6 +103,8 @@ export class TriadTray extends HandlebarsApplicationMixin(ApplicationV2) {
     #pickerOpen = false;
     /** Weapon id whose ammo picker is open. */
     #reloadPicker = null;
+    /** Weapon id whose bomb picker is open (Alchemical Crossbow). */
+    #bombPicker = null;
     /** Slug of the action whose skill picker is open (Recall Knowledge). */
     #skillPicker = null;
     #actor = null;
@@ -377,6 +383,7 @@ export class TriadTray extends HandlebarsApplicationMixin(ApplicationV2) {
             editingHp: this.#editingHp,
             pickerOpen: this.#pickerOpen,
             reloadPicker: this.#reloadPicker,
+            bombPicker: this.#bombPicker,
             fatalError: null,
             actor: null,
             tools: this.#actor ? this.#toolsFor(this.#actor) : []
@@ -672,6 +679,35 @@ export class TriadTray extends HandlebarsApplicationMixin(ApplicationV2) {
         if (!weaponId) return;
         this.#reloadPicker = null;
         await Use.reload(this.#actor, weaponId, target.dataset.ammoId, { all: target.dataset.all === "true" });
+        this.render();
+    }
+
+    /** One eligible bomb → load it; otherwise open the bomb picker. */
+    static async #onBomb(event, target) {
+        const weaponId = target.closest("[data-weapon-id]")?.dataset.weaponId;
+        if (!weaponId || !this.#actor) return;
+        const options = Bomb.eligibleBombs(this.#actor);
+        if (options.length === 1 && this.#bombPicker !== weaponId) {
+            this.#bombPicker = null;
+            await Bomb.loadBomb(this.#actor, weaponId, options[0].id);
+            return this.render();
+        }
+        this.#bombPicker = this.#bombPicker === weaponId ? null : weaponId;
+        this.render();
+    }
+
+    static async #onPickBomb(event, target) {
+        const weaponId = target.closest("[data-weapon-id]")?.dataset.weaponId;
+        if (!weaponId) return;
+        this.#bombPicker = null;
+        await Bomb.loadBomb(this.#actor, weaponId, target.dataset.bombId);
+        this.render();
+    }
+
+    static async #onUnloadBomb(event, target) {
+        const weaponId = target.closest("[data-weapon-id]")?.dataset.weaponId;
+        if (!weaponId) return;
+        await Bomb.unloadBomb(this.#actor, weaponId);
         this.render();
     }
 

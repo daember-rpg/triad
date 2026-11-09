@@ -6,6 +6,7 @@ import { isActorsTurn } from "./helpers.js";
 import { ensureSocket } from "./relay.js";
 import { registerMovementHooks } from "./movement.js";
 import { TriadTray, isCombatRunning } from "./tray.js";
+import { onChatMessage as onCrossbowMessage } from "./alchemical-crossbow.js";
 
 let templatesLoaded = Promise.resolve();
 
@@ -141,6 +142,9 @@ function registerRefreshHooks(tray) {
             resetTurnState(combat.combatant?.actor);
         }
     });
+
+    // Alchemical Crossbow: count down the loaded bomb on attacks made with it.
+    Hooks.on("createChatMessage", message => void onCrossbowMessage(message));
 
     // Multiple attack penalty: count attack rolls made on the actor's own turn (from the tray or the sheet).
     Hooks.on("createChatMessage", message => {
