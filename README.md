@@ -6,7 +6,7 @@ A left-side tray for **Pathfinder 2e** on Foundry VTT V13/V14. Players and GMs u
 In Foundry: **Add-on Modules → Install Module**, paste this manifest URL and click Install:
 
 ```
-https://github.com/daember-rpg/triad/releases/latest/download/module.json
+https://raw.githubusercontent.com/daember-rpg/triad/main/module.json
 ```
 
 Requires the **pf2e** system. **socketlib** is recommended (players' End Turn and action pips go through the GM).

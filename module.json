@@ -9,8 +9,8 @@
     }
   ],
   "url": "https://github.com/daember-rpg/triad",
-  "manifest": "https://github.com/daember-rpg/triad/releases/latest/download/module.json",
-  "download": "https://github.com/daember-rpg/triad/releases/download/v0.8.1-alpha/triad.zip",
+  "manifest": "https://raw.githubusercontent.com/daember-rpg/triad/main/module.json",
+  "download": "https://raw.githubusercontent.com/daember-rpg/triad/main/dist/triad.zip",
   "bugs": "https://github.com/daember-rpg/triad/issues",
   "compatibility": {
     "minimum": "13",
