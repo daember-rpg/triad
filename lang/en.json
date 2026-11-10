@@ -228,17 +228,19 @@
     },
     "Bomb": {
       "Load": "Load bomb",
-      "Hint": "Load a lesser alchemical bomb into the bracket (Interact). The next three attacks deal +1d6 of the bomb's damage type.",
+      "Hint": "Choose a lesser alchemical bomb to load into the bracket (Interact). The next three attacks deal +1d6 of the bomb's damage type.",
       "Empty": "No bomb loaded",
       "Unload": "Unload",
       "UnloadHint": "Take the bomb out and put it back in the inventory.",
       "UnloadFired": "Remove the bomb. It has been fired, so what is left is wasted.",
-      "NoBombs": "No lesser alchemical bomb that deals energy damage (acid, cold, electricity, fire, sonic…) in the inventory.",
+      "NoBombs": "No bombs in the inventory.",
       "AlreadyLoaded": "A bomb is already loaded in this crossbow.",
       "EffectName": "Loaded Bomb: {bomb}",
       "SpentName": "Loaded Bomb: {bomb} (spent)",
       "EffectDescription": "The next three attacks with {weapon} deal an extra 1d6 {damage} damage. The second and third attacks must come within 1 minute of the first, or the rest of the bomb is wasted. No splash or other bomb effects.",
-      "LoadMessage": "{actor} loads {bomb} into the bracket of {weapon}."
+      "LoadMessage": "{actor} loads {bomb} into the bracket of {weapon}.",
+      "NotLesser": "Only lesser bombs fit the bracket.",
+      "NotEnergy": "The bracket only takes bombs that deal energy damage (acid, cold, electricity, fire, sonic…)."
     }
   }
 }

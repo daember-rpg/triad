@@ -68,11 +68,13 @@
     {{#if (eq @root.bombPicker bomb.weaponId)}}
         <li class="triad-reload-picker" data-weapon-id="{{bomb.weaponId}}">
             {{#each bomb.options as |option|}}
-                <div class="triad-reload-picker__option">
+                <div class="triad-reload-picker__option {{#if option.disabled}}is-depleted{{/if}}" {{#if option.reason}}data-tooltip="{{option.reason}}"{{/if}}>
                     <img src="{{option.img}}" alt="">
                     <span class="triad-reload-picker__name" data-overflow-tip="{{option.name}}">{{option.name}}</span>
                     <span class="triad-tag">{{option.damage}} ×{{option.quantity}}</span>
-                    <button type="button" class="triad-chip" data-action="pickBomb" data-bomb-id="{{option.id}}" data-tooltip="{{localize "TRIAD.Bomb.Load"}}"><i class="fa-solid fa-bomb" inert></i></button>
+                    {{#unless option.disabled}}
+                        <button type="button" class="triad-chip" data-action="pickBomb" data-bomb-id="{{option.id}}" data-tooltip="{{localize "TRIAD.Bomb.Load"}}"><i class="fa-solid fa-bomb" inert></i></button>
+                    {{/unless}}
                 </div>
             {{else}}
                 <p class="triad-reload-picker__empty">{{localize "TRIAD.Bomb.NoBombs"}}</p>

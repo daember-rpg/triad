@@ -26,14 +26,24 @@ export function isAlchemicalCrossbow(weapon) {
     return slug === "alchemical-crossbow" || base === "alchemical-crossbow" || /alchemical crossbow/i.test(weapon.name ?? "");
 }
 
+/** Why the bracket refuses a bomb, as a localization key, or null when it takes it. */
+function refusal(item) {
+    if (!ENERGY.has(item.system?.damage?.damageType)) return "TRIAD.Bomb.NotEnergy";
+    const level = Number(item.level ?? item.system?.level?.value ?? 0);
+    const lesser = level <= 1 || /lesser/i.test(item.name ?? "") || /-lesser$/.test(item.slug ?? "");
+    return lesser ? null : "TRIAD.Bomb.NotLesser";
+}
+
+/** Every bomb in the inventory, carried and not empty. */
+function carriedBombs(actor) {
+    return (actor?.itemTypes?.weapon ?? [])
+        .filter(item => item.system?.group === "bomb" && !item.isStowed && item.quantity > 0)
+        .sort((a, b) => a.name.localeCompare(b.name));
+}
+
 /** Lesser bombs that deal energy damage: the ones the bracket accepts. */
 export function eligibleBombs(actor) {
-    return (actor?.itemTypes?.weapon ?? []).filter(item => {
-        if (item.system?.group !== "bomb" || item.isStowed || !(item.quantity > 0)) return false;
-        if (!ENERGY.has(item.system?.damage?.damageType)) return false;
-        const level = Number(item.level ?? item.system?.level?.value ?? 0);
-        return level <= 1 || /lesser/i.test(item.name ?? "") || /-lesser$/.test(item.slug ?? "");
-    }).sort((a, b) => a.name.localeCompare(b.name));
+    return carriedBombs(actor).filter(item => refusal(item) === null);
 }
 
 function bombEffect(weapon) {
@@ -50,13 +60,19 @@ export function bombState(weapon) {
     if (!isAlchemicalCrossbow(weapon)) return null;
     const effect = bombEffect(weapon);
     const data = effect?.flags?.[MODULE_ID]?.[FLAG];
-    const options = eligibleBombs(weapon.actor).map(bomb => ({
-        id: bomb.id,
-        name: bomb.name,
-        img: bomb.img,
-        quantity: bomb.quantity,
-        damage: damageLabel(bomb.system.damage.damageType)
-    }));
+    // Every bomb is listed so the alchemist chooses; the ones the bracket refuses say why.
+    const options = carriedBombs(weapon.actor).map(bomb => {
+        const reason = refusal(bomb);
+        return {
+            id: bomb.id,
+            name: bomb.name,
+            img: bomb.img,
+            quantity: bomb.quantity,
+            damage: damageLabel(bomb.system.damage.damageType),
+            disabled: reason !== null,
+            reason: reason ? t(reason) : null
+        };
+    }).sort((a, b) => a.disabled - b.disabled);
     return {
         weaponId: weapon.id,
         loaded: effect

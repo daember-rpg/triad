@@ -682,16 +682,10 @@ export class TriadTray extends HandlebarsApplicationMixin(ApplicationV2) {
         this.render();
     }
 
-    /** One eligible bomb → load it; otherwise open the bomb picker. */
+    /** Always opens the bomb picker: which bomb goes in is the alchemist's choice. */
     static async #onBomb(event, target) {
         const weaponId = target.closest("[data-weapon-id]")?.dataset.weaponId;
         if (!weaponId || !this.#actor) return;
-        const options = Bomb.eligibleBombs(this.#actor);
-        if (options.length === 1 && this.#bombPicker !== weaponId) {
-            this.#bombPicker = null;
-            await Bomb.loadBomb(this.#actor, weaponId, options[0].id);
-            return this.render();
-        }
         this.#bombPicker = this.#bombPicker === weaponId ? null : weaponId;
         this.render();
     }
