@@ -19,8 +19,9 @@
                 </div>
             {{/if}}
             {{#if turn.isTurn}}
-                <button type="button" class="triad-button triad-button--accent" data-action="endTurn">
-                    <i class="fa-solid fa-hourglass-end" inert></i> {{localize "TRIAD.Combat.EndTurn"}}
+                <button type="button" class="triad-button triad-button--accent triad-turn__end" data-action="endTurn"
+                        data-tooltip="{{localize "TRIAD.Combat.EndTurn"}}" aria-label="{{localize "TRIAD.Combat.EndTurn"}}">
+                    <i class="fa-solid fa-hourglass-end" inert></i>
                 </button>
             {{else}}
                 <span class="triad-turn__init" data-tooltip="{{localize "TRIAD.Combat.Initiative"}}"><i class="fa-solid fa-flag" inert></i> {{turn.initiative}}</span>

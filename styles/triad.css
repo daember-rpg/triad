@@ -882,6 +882,22 @@ button.triad-stat:hover + .triad-stat::before {
     flex-shrink: 0;
 }
 
+/* End Turn is a round gold button with the hourglass, no label: with Quickened's fourth
+   action a written label no longer fits the 320px tray. The name is in the tooltip. */
+#triad-tray .triad-turn__end {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    gap: 0;
+    border-radius: 50%;
+    font-size: 15px;
+    letter-spacing: 0;
+}
+
+#triad-tray .triad-turn__end:active {
+    transform: scale(0.92);
+}
+
 .triad-turn__init {
     display: inline-flex;
     align-items: center;
