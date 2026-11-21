@@ -101,4 +101,4 @@ Hooks.on("triad.ready", api => {
 
 **Persona** docks itself as a tab (masks icon) with a dot when a player has something new to look at.
 
-**First Strike 1.1.0+** docks itself into the Initiative tab. When an encounter begins, everyone's tray opens on Initiative to roll; a player's tray switches to Actions when their own turn starts. Triad's Roll Initiative button uses First Strike's GM relay.
+**First Strike** shows the turn order in its own place on screen, so players see whose turn it is without leaving the character sheet or the tray. When it is installed, Triad's Roll Initiative button uses First Strike's GM relay.
